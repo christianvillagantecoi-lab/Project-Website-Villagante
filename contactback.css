@@ -1,0 +1,140 @@
+:root {
+  /* Contact-tab parallax container controls. */
+  --contact-parallax-container-width: 400%;
+  --contact-parallax-container-height: 900px;
+  --contact-parallax-container-x: 0px;
+  --contact-parallax-container-y: 0px;
+  --contact-parallax-container-scale: 1;
+
+  /* Contact-tab parallax media controls. */
+  --contact-parallax-media-width: 250%;
+  --contact-parallax-media-height: 235%;
+  --contact-parallax-media-x: 1050px;
+  --contact-parallax-media-y: -220px;
+  --contact-parallax-media-scale: 0.6;
+  --contact-parallax-media-overscan: 500px;
+  --contact-parallax-scroll-speed: 1.2;
+
+  /* Contact-tab edge gradients. */
+  --contact-parallax-left-gradient-x: -360px;
+  --contact-parallax-left-gradient-y: 0px;
+  --contact-parallax-left-gradient-width: 180px;
+  --contact-parallax-left-gradient-height: 110%;
+  --contact-parallax-left-gradient-color: #000000;
+  --contact-parallax-left-gradient-opacity: 1;
+  --contact-parallax-left-gradient-start-opacity: 1;
+  --contact-parallax-left-gradient-end-opacity: 0;
+  --contact-parallax-left-gradient-start-position: 0%;
+  --contact-parallax-left-gradient-end-position: 100%;
+  --contact-parallax-right-gradient-x: -360px;
+  --contact-parallax-right-gradient-y: 0px;
+  --contact-parallax-right-gradient-width: 180px;
+  --contact-parallax-right-gradient-height: 110%;
+  --contact-parallax-right-gradient-color: #000000;
+  --contact-parallax-right-gradient-opacity: 1;
+  --contact-parallax-right-gradient-start-opacity: 1;
+  --contact-parallax-right-gradient-end-opacity: 0;
+  --contact-parallax-right-gradient-start-position: 0%;
+  --contact-parallax-right-gradient-end-position: 100%;
+
+  /* Contact-tab shadow controls. */
+  --contact-parallax-shadow-x: 0px;
+  --contact-parallax-shadow-y: 0px;
+  --contact-parallax-shadow-width: 200%;
+  --contact-parallax-shadow-height: 800px;
+  --contact-parallax-shadow-color: rgba(0, 0, 0, 0.7);
+  --contact-parallax-shadow-blur: 100px;
+}
+
+#page-contact {
+  position: relative;
+  isolation: isolate;
+}
+
+#page-contact::before,
+#page-contact::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#page-contact::before {
+  left: var(--contact-parallax-left-gradient-x);
+  top: var(--contact-parallax-left-gradient-y);
+  width: var(--contact-parallax-left-gradient-width);
+  height: var(--contact-parallax-left-gradient-height);
+  opacity: var(--contact-parallax-left-gradient-opacity);
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--contact-parallax-left-gradient-color) calc(var(--contact-parallax-left-gradient-start-opacity) * 100%), transparent) var(--contact-parallax-left-gradient-start-position),
+    color-mix(in srgb, var(--contact-parallax-left-gradient-color) calc(var(--contact-parallax-left-gradient-end-opacity) * 100%), transparent) var(--contact-parallax-left-gradient-end-position)
+  );
+}
+
+#page-contact::after {
+  right: var(--contact-parallax-right-gradient-x);
+  top: var(--contact-parallax-right-gradient-y);
+  width: var(--contact-parallax-right-gradient-width);
+  height: var(--contact-parallax-right-gradient-height);
+  opacity: var(--contact-parallax-right-gradient-opacity);
+  background: linear-gradient(
+    to left,
+    color-mix(in srgb, var(--contact-parallax-right-gradient-color) calc(var(--contact-parallax-right-gradient-start-opacity) * 100%), transparent) var(--contact-parallax-right-gradient-start-position),
+    color-mix(in srgb, var(--contact-parallax-right-gradient-color) calc(var(--contact-parallax-right-gradient-end-opacity) * 100%), transparent) var(--contact-parallax-right-gradient-end-position)
+  );
+}
+
+#page-contact > .contact-parallax {
+  position: absolute;
+  left: -50%;
+  top: var(--contact-parallax-container-y);
+  width: var(--contact-parallax-container-width);
+  height: var(--contact-parallax-container-height);
+  overflow: visible;
+  clip-path: inset(0 -100vw -100vh -100vw);
+  pointer-events: none;
+  z-index: 0;
+  transform: translateX(calc(-50% + var(--contact-parallax-container-x))) scale(var(--contact-parallax-container-scale));
+  transform-origin: center top;
+  opacity: 0.72;
+}
+
+#page-contact > .contact-parallax > .contact-parallax-media {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  width: max(var(--contact-parallax-media-width), calc(100% + var(--contact-parallax-media-overscan)));
+  height: max(var(--contact-parallax-media-height), calc(100% + var(--contact-parallax-media-overscan)));
+  object-fit: contain;
+  object-position: center;
+  transform: translate(calc(-50% + var(--contact-parallax-media-x)), calc(-50% + var(--contact-parallax-media-y) + var(--contact-parallax-scroll-y, 0px))) scale(var(--contact-parallax-media-scale));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+#page-contact > .contact-parallax-shadow {
+  position: absolute;
+  left: -50%;
+  top: var(--contact-parallax-shadow-y);
+  width: var(--contact-parallax-shadow-width);
+  height: var(--contact-parallax-shadow-height);
+  transform: translateX(calc(-50% + var(--contact-parallax-shadow-x)));
+  background: linear-gradient(
+    to right,
+    var(--contact-parallax-shadow-color) 0%,
+    var(--contact-parallax-shadow-color) 50%,
+    transparent 100%
+  );
+  box-shadow: none;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#page-contact > :not(.contact-parallax):not(.contact-parallax-shadow) {
+  position: relative;
+  z-index: 3;
+}

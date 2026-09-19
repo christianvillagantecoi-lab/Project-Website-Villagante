@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Control Center - KouseiLarsCII</title>
+  <link rel="icon" type="image/jpeg" href="images/Villagante.jpg">
+  <link rel="stylesheet" href="projects.css">
+  <link rel="stylesheet" href="visitor.css">
+  <link rel="stylesheet" href="adminchatai.css">
+  <style>
+    :root {
+      --bg-color: #0f0f13;
+      --card-bg: #1e1e26;
+      --card-hover: #252530;
+      --accent-color: #ff4757;
+      --accent-hover: #e03e4d;
+      --text-main: #ffffff;
+      --text-muted: #aaaaaa;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --sidebar-width: 260px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    #authOverlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--bg-color);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      background: #14141a;
+      border-right: 1px solid var(--border-color);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: fixed;
+      height: 100vh;
+      top: 0; left: 0;
+    }
+
+    .brand-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-title span { color: var(--accent-color); }
+
+    .admin-account { display:flex; align-items:center; gap:10px; margin-bottom:12px; min-width:0; }
+    .admin-account-photo { width:38px; height:38px; flex:0 0 38px; border:2px solid var(--accent-color); border-radius:50%; object-fit:cover; background:#252530; }
+    .admin-account-copy { min-width:0; }
+    .admin-account-copy strong { display:block; color:var(--text-main); font-size:.78rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .admin-account-copy span { display:block; margin-top:3px; color:var(--text-muted); font-size:.68rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 12px 16px;
+      border-radius: 10px;
+      text-align: left;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      background: var(--card-bg);
+      color: var(--text-main);
+    }
+
+    .dropdown-arrow {
+      font-size: 0.75rem;
+      transition: transform 0.25s ease;
+    }
+
+    .dropdown-arrow.open {
+      transform: rotate(180deg);
+    }
+
+    .submenu {
+      list-style: none;
+      padding-left: 16px;
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .submenu.open {
+      display: flex;
+    }
+
+    .submenu-btn {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 10px 14px;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .submenu-btn:hover, .submenu-btn.active {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--accent-color);
+    }
+
+    .logout-btn {
+      background: rgba(255, 71, 87, 0.1);
+      color: var(--accent-color);
+      border: 1px solid var(--accent-color);
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .logout-btn:hover {
+      background: var(--accent-color);
+      color: #fff;
+    }
+
+    .main-content {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      padding: 36px;
+    }
+
+    .page-header { margin-bottom: 30px; }
+    .page-header h1 { font-size: 1.8rem; font-weight: 800; }
+    .page-header p { color: var(--text-muted); font-size: 0.9rem; margin-top: 4px; }
+
+    .dashboard-tab-view { display: none; }
+    .dashboard-tab-view.active-tab { display: block !important; }
+
+    .control-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 1000px;
+      margin-bottom: 24px;
+    }
+
+    .control-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .form-control {
+      width: 100% !important;
+      background: rgba(15, 15, 15, 0.6);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .form-control:focus { border-color: var(--accent-color); }
+
+    .save-btn {
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .save-btn:hover { background: var(--accent-hover); }
+
+    .item-card {
+      background: rgba(15, 15, 15, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .action-btn-edit {
+      background: #2ed573; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 700;
+    }
+
+    .action-btn-delete {
+      background: var(--accent-color); color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 700;
+    }
+
+    .toast-msg { margin-top: 10px; font-size: 0.85rem; color: #2ed573; display: none; }
+
+    .image-tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .image-tab-btn.active {
+      background: var(--accent-color);
+      border-color: var(--accent-color);
+      color: #ffffff;
+    }
+    
+    /* Category Section Headers for Stats */
+    .stats-category-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent-color);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 16px 0 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .contact-admin-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(320px, .9fr); gap: 18px; align-items: start; }
+    .contact-admin-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+    .contact-admin-heading h3 { margin: 0; }
+    .contact-admin-heading p, .contact-management-status { color: var(--text-muted); font-size: .78rem; margin-top: 5px; }
+    .contact-live-badge { color: #2ed573; font-size: .72rem; font-weight: 800; }
+    .contact-management-status { margin: 14px 0; }
+    .contact-management-toolbar { display: flex; align-items: center; gap: 8px; margin: 0 0 14px; color: var(--text-muted); font-size: .75rem; }
+    .contact-management-toolbar select { background: var(--bg-color); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 7px 9px; }
+    .contact-management-list { display: grid; gap: 16px; }
+    .contact-group h3 { color: var(--accent-color); font-size: .86rem; text-transform: uppercase; margin-bottom: 8px; }
+    .contact-group h3 span { color: var(--text-muted); margin-left: 5px; }
+    .contact-table-scroll { overflow-x: auto; border: 1px solid var(--border-color); border-radius: 9px; }
+    .contact-table { width: 100%; min-width: 760px; border-collapse: collapse; background: rgba(255,255,255,.025); }
+    .contact-table th { padding: 11px 10px; background: rgba(255,255,255,.06); color: var(--text-muted); font-size: .68rem; text-align: left; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+    .contact-table td { padding: 12px 10px; border-top: 1px solid var(--border-color); vertical-align: top; font-size: .8rem; }
+    .contact-table a { color: #74b9ff; text-decoration: none; overflow-wrap: anywhere; }
+    .contact-table-message { max-width: 260px; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .contact-table-message small { display: block; margin-top: 7px; color: var(--text-muted); font-size: .68rem; }
+    .contact-table select, .contact-analytics-controls button { background: var(--bg-color); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 7px; }
+    .contact-delete-btn { border: 1px solid #ff4757; color: #ff6b78; background: transparent; border-radius: 6px; padding: 7px; cursor: pointer; }
+    .contact-delete-btn:hover { background: rgba(255,71,87,.15); }
+    .contact-analytics-controls { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0; }
+    .contact-analytics-controls select { background: var(--bg-color); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 7px 9px; }
+    .contact-analytics-controls button { cursor: pointer; font-weight: 700; }
+    .contact-analytics-controls button.active { background: var(--accent-color); color: #fff; }
+    .contact-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+    .contact-metrics div { padding: 10px; border: 1px solid var(--border-color); border-radius: 7px; background: rgba(255,255,255,.03); }
+    .contact-metrics span { display: block; color: var(--text-muted); font-size: .65rem; }
+    .contact-metrics strong { display: block; margin-top: 5px; color: var(--accent-color); font-size: 1.25rem; }
+    .contact-chart-wrap { margin-top: 14px; padding: 10px 4px; overflow-x: auto; background: rgba(0,0,0,.18); border-radius: 8px; }
+    .contact-chart-wrap svg { display: block; min-width: 620px; width: 100%; height: 230px; }
+    .contact-chart-grid { stroke: rgba(255,255,255,.1); stroke-dasharray: 4; }
+    .contact-chart-label { fill: var(--text-muted); font-size: 10px; }
+    .contact-chart-axis-value, .contact-chart-value { fill: var(--text-muted); font-size: 10px; }
+    .contact-chart-value { fill: #fff; font-weight: 700; }
+    .contact-chart-line { fill: none; stroke: #2ed573; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .contact-chart-dot { fill: #2ed573; stroke: #fff; stroke-width: 1; }
+    .contact-chart-bar { fill: #2ed573; }
+    .contact-empty-state { color: var(--text-muted); padding: 20px 0; }
+    @media (max-width: 900px) { .contact-admin-layout { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div id="authOverlay">
+    <h2>Verifying Admin Authorization...</h2>
+  </div>
+
+  <nav class="sidebar">
+    <div>
+      <div class="brand-title"><span>●</span> Admin Control</div>
+      <ul class="nav-list">
+        <li>
+          <button class="nav-btn active" id="nav-settings" onclick="switchDashboardTab('settings')">
+            <span>Site Settings</span>
+          </button>
+        </li>
+
+        <!-- PROJECT MANAGER WITH DROPDOWN SUBMENU -->
+        <li>
+          <button class="nav-btn" id="nav-projects-parent" onclick="toggleProjectMenu()">
+            <span>📁 Project Manager</span>
+            <span class="dropdown-arrow" id="projectArrow">▼</span>
+          </button>
+          <ul class="submenu" id="projectSubmenu">
+            <li>
+              <button class="submenu-btn" id="nav-projects" onclick="switchDashboardTab('projects')">
+                <span>📤</span> Upload Projects
+              </button>
+            </li>
+            <li>
+              <button class="submenu-btn" id="nav-visitor" onclick="switchDashboardTab('visitor')">
+                <span>📊</span> Visitor Analytics
+              </button>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <button class="nav-btn" id="nav-announcements" onclick="switchDashboardTab('announcements')">
+            <span>Announcements</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" id="nav-friends" onclick="switchDashboardTab('friends')">
+            <span>Friends & Crew</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" id="nav-flags" onclick="switchDashboardTab('flags')">
+            <span>Feature Flags</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" id="nav-ai-history" onclick="switchDashboardTab('ai-history')">
+            <span>AI Chat History</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" id="nav-contacts" onclick="switchDashboardTab('contacts')">
+            <span>Contact Management</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="admin-account">
+        <img id="adminUserPhoto" class="admin-account-photo" src="images/Villagante.jpg" alt="Admin profile picture">
+        <div class="admin-account-copy">
+          <strong id="adminUserName">Administrator</strong>
+          <span id="adminUserEmail">Not signed in</span>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="handleLogout()">Log Out</button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h1 id="tabHeading">Website Control Center</h1>
+      <p id="tabSubheading">Manage real-time content and future features stored in Cloud Firestore.</p>
+    </div>
+
+    <!-- TAB 1: SITE SETTINGS -->
+    <div id="tab-settings" class="dashboard-tab-view active-tab">
+      <div class="control-card">
+        <h3>General Site Info</h3>
+        <form onsubmit="saveSiteSettings(event)">
+          <div class="form-group">
+            <label>Website Title / Channel Name</label>
+            <input type="text" id="siteTitle" class="form-control" placeholder="Enter site title...">
+          </div>
+          <div class="form-group">
+            <label>Hero Subtitle / Bio</label>
+            <input type="text" id="siteSubtitle" class="form-control" placeholder="Enter hero subtitle...">
+          </div>
+          <button type="submit" class="save-btn" id="saveSettingsBtn">Save Changes</button>
+          <div id="statusInfo" class="toast-msg">Saved to Cloud Firestore!</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB 2: UPLOAD PROJECTS -->
+    <div id="tab-projects" class="dashboard-tab-view">
+      <div class="control-card">
+        <h3 id="projectFormHeading">Upload / Edit Project</h3>
+        <form onsubmit="saveProject(event)">
+          <input type="hidden" id="editingProjectId" value="">
+
+          <div class="form-group">
+            <label>Project Category</label>
+            <select id="projectCategory" class="form-control" required>
+              <option value="major">Major Project</option>
+              <option value="minor">Minor Project</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Project Title</label>
+            <input type="text" id="projectTitle" class="form-control" placeholder="e.g. AI Portfolio System" required>
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="projectDesc" class="form-control" rows="3" placeholder="Describe your project details..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>GitHub Repository URL</label>
+            <input type="url" id="projectGithub" class="form-control" placeholder="https://github.com/username/repo">
+          </div>
+
+          <div class="form-group">
+            <label>Live Demo Link (Optional)</label>
+            <input type="url" id="projectDemo" class="form-control" placeholder="https://yourdemo.com">
+          </div>
+
+          <div class="form-group">
+            <label>Project Image Source</label>
+            <div class="image-mode-tabs" style="display: flex; gap: 10px; margin-bottom: 12px;">
+              <button type="button" class="image-tab-btn active" id="tabModeLink" onclick="switchImageSourceMode('link')">🔗 Internet Link / Path</button>
+              <button type="button" class="image-tab-btn" id="tabModeFile" onclick="switchImageSourceMode('file')">📁 Upload File</button>
+            </div>
+
+            <input type="hidden" id="projectImage" required>
+
+            <div id="imageLinkBox" class="image-input-subbox">
+              <input type="text" id="projectImageLinkInput" class="form-control" placeholder="e.g. images/Gradient.jpg or https://..." oninput="handleImageLinkChange(this.value)">
+            </div>
+
+            <div id="imageFileBox" class="image-input-subbox" style="display: none;">
+              <input type="file" id="projectFileInput" class="form-control" accept="image/*" onchange="handleFileUpload(event)">
+            </div>
+
+            <div id="imagePreviewContainer" style="margin-top: 12px; display: none; align-items: center; gap: 12px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color);">
+              <img id="imagePreviewBox" src="" alt="Image Preview" style="width: 70px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid var(--accent-color);">
+              <div>
+                <span style="font-size: 0.8rem; color: var(--text-main); font-weight: 700; display: block;">Image Preview</span>
+                <span id="previewStatusText" style="font-size: 0.75rem; color: var(--text-muted);">Ready to save</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" class="save-btn" id="saveProjectBtn">Publish Project</button>
+            <button type="button" class="save-btn" id="cancelProjectEditBtn" style="background: #444; display: none;" onclick="cancelProjectEdit()">Cancel Edit</button>
+          </div>
+          <div id="statusProject" class="toast-msg">Project saved successfully!</div>
+        </form>
+
+        <hr style="border-color: var(--border-color); margin: 24px 0;">
+
+        <h3>Published Projects Gallery</h3>
+        <div id="projectsAdminList" style="display: flex; flex-direction: column; gap: 14px; margin-top: 16px;">
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Loading projects...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: VISITOR ANALYTICS -->
+<div id="tab-visitor" class="dashboard-tab-view">
+  
+  <!-- Analytics Control Action Bar -->
+  <div class="analytics-action-bar">
+    <div class="action-bar-title">
+      <h3>⚙️ Visitor Data Control</h3>
+      <p>Manage, reset, export, or import project traffic analytics.</p>
+    </div>
+    <div class="action-bar-buttons">
+      <button type="button" class="btn-analytics btn-export" onclick="exportAnalyticsData()">
+        📥 Export Data (CSV)
+      </button>
+      <button type="button" class="btn-analytics btn-import" onclick="triggerImportFileInput()">
+        📤 Import Data
+      </button>
+      <input type="file" id="importFileInput" accept=".csv, .json" style="display: none;" onchange="handleImportAnalyticsFile(event)">
+      <button type="button" class="btn-analytics btn-reset" onclick="openResetModal()">
+        🗑️ Reset All Views
+      </button>
+    </div>
+  </div>
+
+  <!-- YOUTUBE STUDIO STYLE ANALYTICS DASHBOARD -->
+  <div class="yt-analytics-wrapper">
+    <div class="yt-analytics-top-bar">
+      <div class="yt-analytics-header-title">
+        <h2 id="ytChartHeaderTitle">Your projects got 0 views in the last 28 days</h2>
+        <p>Real-time performance tracking and views over time.</p>
+      </div>
+      <div class="yt-analytics-controls">
+        <select class="yt-control-select" id="ytDateRangeSelect" onchange="changeAnalyticsDateRange(this.value)">
+          <option value="7">Last 7 days</option>
+          <option value="28" selected>Last 28 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="year">Year to date</option>
+        </select>
+        <button type="button" class="yt-control-btn active" id="btnTypeLine" onclick="switchChartType('line')">📈 Line</button>
+        <button type="button" class="yt-control-btn" id="btnTypeBar" onclick="switchChartType('bar')">📊 Bar</button>
+        <button type="button" class="yt-control-btn" style="background: #2ed573; border-color: #2ed573;" onclick="openChartModal()">📊 Open Pop-out Chart</button>
+      </div>
+    </div>
+
+    <!-- Metric Tabs -->
+    <div class="yt-metrics-summary-bar">
+      <div class="yt-metric-tab active">
+        <span class="yt-metric-label">Views</span>
+        <span class="yt-metric-value" id="ytTotalViewsVal">0</span>
+        <span class="yt-metric-trend">▲ Live metrics</span>
+      </div>
+      <div class="yt-metric-tab">
+        <span class="yt-metric-label">Est. Watch time (hrs)</span>
+        <span class="yt-metric-value" id="ytWatchTimeVal">0.0</span>
+        <span class="yt-metric-trend">▲ Active sessions</span>
+      </div>
+      <div class="yt-metric-tab">
+        <span class="yt-metric-label">Unique Projects</span>
+        <span class="yt-metric-value" id="ytProjectCountVal">0</span>
+        <span class="yt-metric-trend">Tracked in database</span>
+      </div>
+    </div>
+
+    <!-- Main Grid: Interactive SVG Line/Bar Chart + Realtime Box -->
+    <div class="yt-main-dashboard-grid">
+      <div class="yt-chart-box" id="ytChartContainer">
+        <!-- SVG / Bar Render Target -->
+      </div>
+
+      <!-- YouTube Style Realtime Sidebar Widget -->
+      <div class="yt-realtime-widget">
+        <div class="yt-realtime-header">
+          <span class="yt-realtime-title">Realtime</span>
+          <span class="yt-live-pulse-badge"><span class="yt-pulse-dot"></span> Updating live</span>
+        </div>
+        <div>
+          <span style="font-size: 0.75rem; color: #aaa;">Total Views</span>
+          <div class="yt-realtime-big-num" id="ytRealtimeTotal">0</div>
+        </div>
+        <div>
+          <span style="font-size: 0.72rem; color: #aaa; display: block; margin-bottom: 6px;">Views · Last 48 hours</span>
+          <div class="yt-micro-bar-chart" id="ytMicroBars">
+            <!-- Dynamic Micro Bars -->
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.65rem; color: #888; margin-top: 4px;">
+            <span>-48h</span>
+            <span>Now</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PUBLISHED PROJECTS LIST (UNDER THE CHARTS) -->
+  <div class="control-card">
+    <h3>Published Projects Visitor Stats</h3>
+    <div class="stats-two-column-grid">
+      <div class="stats-column">
+        <div class="stats-category-title">🔥 Major Projects</div>
+        <div id="majorProjectStatsList" style="display: flex; flex-direction: column; gap: 12px;">
+          <p style="color: var(--text-muted);">Loading major project visitor stats...</p>
+        </div>
+      </div>
+      <div class="stats-column">
+        <div class="stats-category-title">🛠️ Minor Projects</div>
+        <div id="minorProjectStatsList" style="display: flex; flex-direction: column; gap: 12px;">
+          <p style="color: var(--text-muted);">Loading minor project visitor stats...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CHART POP-OUT MODAL PLATFORM -->
+<div id="ytChartModal" class="yt-modal-overlay" style="display: none;">
+  <div class="yt-modal-content">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h3 style="color: #fff; font-size: 1.2rem;">📊 Expanded Analytics Dashboard</h3>
+      <button type="button" class="yt-control-btn" onclick="closeChartModal()">✕ Close</button>
+    </div>
+    <div id="ytModalChartContainer" style="height: 320px; width: 100%;"></div>
+  </div>
+</div>
+
+<!-- CONFIRMATION MODAL DIALOG -->
+<div id="analyticsResetModal" class="analytics-modal-overlay" style="display: none;">
+  <div class="analytics-modal-content">
+    <div class="modal-icon">⚠️</div>
+    <h2>Reset Visitor Data?</h2>
+    <p>Are you sure you want to delete/reset all project view counters back to 0? This action is meant for testing/experiments and cannot be undone unless you export a backup first.</p>
+    <div class="modal-actions">
+      <button type="button" class="modal-btn cancel-btn" onclick="closeResetModal()">Cancel</button>
+      <button type="button" class="modal-btn confirm-btn" onclick="executeResetAnalytics()">Yes, Reset to 0</button>
+    </div>
+  </div>
+</div>
+
+    <!-- TAB 4: ANNOUNCEMENTS MANAGEMENT -->
+    <div id="tab-announcements" class="dashboard-tab-view">
+      <div class="control-card">
+        <h3 id="announcementFormHeading">Manage Announcements</h3>
+        <form onsubmit="saveAnnouncement(event)">
+          <input type="hidden" id="editingAnnouncementId" value="">
+          <div class="form-group">
+            <label>Announcement Text</label>
+            <textarea id="announcementText" class="form-control" rows="3" placeholder="Enter alert or news update..." required></textarea>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button type="submit" class="save-btn" id="publishBtn">Publish Announcement</button>
+            <button type="button" class="save-btn" id="cancelEditBtn" style="background: #444; display: none;" onclick="cancelEditMode()">Cancel Edit</button>
+          </div>
+          <div id="statusAnnounce" class="toast-msg">Announcement saved!</div>
+        </form>
+
+        <hr style="border-color: var(--border-color); margin: 24px 0;">
+        <h3>Active & Past Announcements</h3>
+        <div id="announcementsList" style="display: flex; flex-direction: column; gap: 14px; margin-top: 16px;"></div>
+      </div>
+    </div>
+
+    <!-- TAB 5: FRIENDS MANAGEMENT -->
+    <div id="tab-friends" class="dashboard-tab-view">
+      <div class="control-card">
+        <h3 id="friendFormHeading">Add New Friend</h3>
+        <form onsubmit="saveFriend(event)">
+          <input type="hidden" id="editingFriendId" value="">
+          <div class="form-group"><label>Friend Name</label><input type="text" id="friendName" class="form-control" required></div>
+          <div class="form-group"><label>Role / Description</label><input type="text" id="friendDesc" class="form-control" required></div>
+          <div class="form-group">
+            <label>Friend Image Source</label>
+            <div class="image-mode-tabs" style="display: flex; gap: 10px; margin-bottom: 12px;">
+              <button type="button" class="image-tab-btn active" id="friendTabModeLink" onclick="switchFriendImageSourceMode('link')">🔗 Internet Link / Path</button>
+              <button type="button" class="image-tab-btn" id="friendTabModeFile" onclick="switchFriendImageSourceMode('file')">📁 Upload File</button>
+            </div>
+
+            <input type="hidden" id="friendImage" required>
+
+            <div id="friendImageLinkBox" class="image-input-subbox">
+              <input type="text" id="friendImageLinkInput" class="form-control" placeholder="e.g. Friends/Name.png or https://..." oninput="handleFriendImageLinkChange(this.value)">
+            </div>
+
+            <div id="friendImageFileBox" class="image-input-subbox" style="display: none;">
+              <input type="file" id="friendFileInput" class="form-control" accept="image/*" onchange="handleFriendFileUpload(event)">
+            </div>
+
+            <div id="friendImagePreviewContainer" style="margin-top: 12px; display: none; align-items: center; gap: 12px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color);">
+              <img id="friendImagePreviewBox" src="" alt="Friend image preview" style="width: 70px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid var(--accent-color);">
+              <div>
+                <span style="font-size: 0.8rem; color: var(--text-main); font-weight: 700; display: block;">Image Preview</span>
+                <span id="friendPreviewStatusText" style="font-size: 0.75rem; color: var(--text-muted);">Ready to save</span>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button type="submit" class="save-btn" id="saveFriendBtn">Add Friend</button>
+            <button type="button" class="save-btn" id="cancelFriendEditBtn" style="background: #444; display: none;" onclick="cancelFriendEdit()">Cancel Edit</button>
+          </div>
+          <div id="statusFriend" class="toast-msg">Friend saved!</div>
+        </form>
+        <hr style="border-color: var(--border-color); margin: 24px 0;">
+        <h3>Current Friends Gallery</h3>
+        <div id="friendsAdminList" style="display: flex; flex-direction: column; gap: 14px; margin-top: 16px;"></div>
+      </div>
+    </div>
+
+    <!-- TAB 6: FEATURE FLAGS -->
+    <div id="tab-flags" class="dashboard-tab-view">
+      <div class="control-card">
+        <h3>Future Feature Toggles</h3>
+        <form onsubmit="saveFeatureFlags(event)">
+          <div class="form-group"><label><input type="checkbox" id="enableVideos"> Enable Video Gallery</label></div>
+          <div class="form-group"><label><input type="checkbox" id="enableTimeline"> Enable Live Timeline</label></div>
+          <div class="form-group"><label><input type="checkbox" id="enableComments"> Enable Visitor Comments</label></div>
+          <button type="submit" class="save-btn" id="saveFlagsBtn">Update Features</button>
+          <div id="statusFlags" class="toast-msg">Flags updated!</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB 7: AI CHAT HISTORY -->
+    <div id="tab-ai-history" class="dashboard-tab-view">
+      <div class="ai-history-admin-layout">
+        <div class="control-card ai-history-admin-card">
+          <div class="ai-history-admin-header">
+            <div>
+              <h3>AI Chat History</h3>
+              <p>Review saved visitor conversations, dates, messages, and delete notifications.</p>
+            </div>
+            <button type="button" class="save-btn" onclick="loadAdminAiHistory()">Refresh History</button>
+          </div>
+          <div id="adminAiHistoryStatus" class="ai-history-admin-status"></div>
+          <div id="adminAiHistoryList" class="admin-ai-history-list"><p>Open this tab to load saved sessions.</p></div>
+        </div>
+
+        <aside class="control-card ai-live-analytics-card">
+          <div class="ai-analytics-heading">
+            <div>
+              <h3>Live AI Sessions</h3>
+              <p>Conversation creation activity from Firestore.</p>
+            </div>
+            <span class="ai-live-indicator"><i></i> Live</span>
+          </div>
+          <div class="ai-analytics-controls">
+            <select id="aiDateRangeSelect" onchange="changeAiAnalyticsDateRange(this.value)">
+              <option value="7">Last 7 days</option>
+              <option value="28" selected>Last 28 days</option>
+              <option value="90">Last 90 days</option>
+              <option value="year">Year to date</option>
+            </select>
+            <button type="button" id="aiChartLineBtn" class="active" onclick="switchAiAnalyticsChart('line')">▱ Line</button>
+            <button type="button" id="aiChartBarBtn" onclick="switchAiAnalyticsChart('bar')">▥ Bar</button>
+            <button type="button" onclick="openAiChartModal()">▣ Open graph</button>
+          </div>
+          <div class="ai-analytics-kpis">
+            <div><span>Total sessions</span><strong id="aiMetricTotal">0</strong><small>Selected range</small></div>
+            <div><span>Recent activity</span><strong id="aiMetricRecent">0</strong><small>Last 48 hours</small></div>
+            <div><span>Year to date</span><strong id="aiMetricYear">0</strong><small>All sessions</small></div>
+          </div>
+          <div class="ai-analytics-chart-wrap">
+            <div id="aiSessionChart" class="ai-session-chart ai-chart-line-mode"></div>
+          </div>
+          <div id="aiAnalyticsUpdated" class="ai-analytics-updated">Waiting for session data...</div>
+          <div class="ai-availability-control">
+            <div>
+              <strong>AI chat availability</strong>
+              <p>Offline disables messages in the full and mini chat.</p>
+            </div>
+            <div class="ai-availability-actions">
+              <button type="button" id="aiAvailabilityToggle" class="ai-availability-toggle" aria-pressed="true" onclick="toggleAiAvailability()">
+                <span class="ai-availability-toggle-track"><span class="ai-availability-toggle-knob"></span></span>
+                <span class="ai-availability-toggle-label">ONLINE</span>
+              </button>
+            </div>
+            <div id="aiAvailabilityStatus" class="ai-availability-current">Checking current status...</div>
+            <div class="ai-availability-stats" aria-label="Availability change totals">
+              <div><strong id="aiOnlineChangeCount">0</strong><span>Online changes</span></div>
+              <div><strong id="aiOfflineChangeCount">0</strong><span>Offline changes</span></div>
+            </div>
+          </div>
+          <div class="ai-status-history">
+            <div class="ai-status-history-heading">
+              <div>
+                <h3>Availability history</h3>
+                <p>Real date and time for every online or offline change.</p>
+              </div>
+              <button type="button" class="save-btn" onclick="loadAiAvailabilityHistory()">Refresh</button>
+            </div>
+            <div id="aiAvailabilityHistoryList" class="ai-status-history-list"><p>Open this tab to load status changes.</p></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- TAB 8: CONTACT MANAGEMENT -->
+    <div id="tab-contacts" class="dashboard-tab-view">
+      <div class="contact-admin-layout">
+        <section class="control-card contact-management-panel">
+          <div class="contact-admin-heading">
+            <div><h3>Contact Message Management</h3><p>Group incoming messages by their current cabinet.</p></div>
+            <button type="button" class="save-btn" onclick="startContactAdminListener()">Refresh</button>
+          </div>
+          <div id="contactManagementStatus" class="contact-management-status">Open this tab to load contact messages.</div>
+          <div class="contact-management-toolbar"><label for="contactManagementSort">Order by</label><select id="contactManagementSort" onchange="changeContactManagementSort(this.value)"><option value="newest" selected>Newest received</option><option value="name">Name A-Z</option><option value="email">Email A-Z</option><option value="status">Cabinet A-Z</option></select></div>
+          <div id="contactManagementList" class="contact-management-list"><p>Contact messages will appear here.</p></div>
+        </section>
+        <aside class="control-card contact-analytics-panel">
+          <div class="contact-admin-heading"><div><h3>Contact Analytics</h3><p>Message creation activity from Firestore.</p></div><span class="contact-live-badge">Live</span></div>
+          <div class="contact-analytics-controls"><select id="contactDateRangeSelect" onchange="changeContactAnalyticsDateRange(this.value)" aria-label="Contact analytics date range"><option value="7">Last 7 days</option><option value="28" selected>Last 28 days</option><option value="90">Last 90 days</option><option value="year">Year to date</option></select><button id="contactChartLineBtn" class="active" type="button" onclick="switchContactAnalyticsChart('line')">▱ Line</button><button id="contactChartBarBtn" type="button" onclick="switchContactAnalyticsChart('bar')">▥ Bar</button><button type="button" onclick="openContactChartModal()">▣ Open graph</button></div>
+          <div class="contact-metrics"><div><span id="contactMetricTotalLabel">28-day messages</span><strong id="contactMetricTotal">0</strong></div><div><span>Last 7 days</span><strong id="contactMetricRecent">0</strong></div><div><span>Categories</span><strong id="contactMetricCategories">0</strong></div></div>
+          <div class="contact-chart-wrap"><div id="contactAnalyticsChart"></div></div>
+        </aside>
+      </div>
+    </div>
+
+    <div id="aiChartModal" class="yt-modal-overlay" style="display: none;">
+      <div class="yt-modal-content ai-chart-modal-content">
+        <div class="ai-chart-modal-heading">
+          <h3>Live AI Sessions</h3>
+          <button type="button" class="yt-control-btn" onclick="closeAiChartModal()">✕ Close</button>
+        </div>
+        <div class="ai-analytics-chart-wrap ai-modal-chart-wrap">
+          <div id="aiModalSessionChart" class="ai-session-chart ai-chart-line-mode"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="contactChartModal" class="yt-modal-overlay" style="display: none;">
+      <div class="yt-modal-content ai-chart-modal-content">
+        <div class="ai-chart-modal-heading">
+          <h3>Contact Analytics</h3>
+          <button type="button" class="yt-control-btn" onclick="closeContactChartModal()">✕ Close</button>
+        </div>
+        <div class="contact-chart-wrap contact-modal-chart-wrap"><div id="contactModalAnalyticsChart"></div></div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="visitor.js"></script>
+  <script src="adminchatai.js"></script>
+  <script src="admincontacts.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC2E3LJsCxPsGl3yXE81J1MRB0hFbI0mIg",
+      authDomain: "villagantecontentdata.firebaseapp.com",
+      projectId: "villagantecontentdata",
+      storageBucket: "villagantecontentdata.firebasestorage.app",
+      messagingSenderId: "899843775768",
+      appId: "1:899843775768:web:3bab141c961435b8f1d26d",
+      measurementId: "G-C2RR7S2RJ1"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const testAdminBypass = new URLSearchParams(window.location.search).get('testAdmin') === '1';
+
+    auth.onAuthStateChanged((user) => {
+      const adminUserPhoto = document.getElementById('adminUserPhoto');
+      const adminUserName = document.getElementById('adminUserName');
+      if (testAdminBypass) {
+        const authOverlay = document.getElementById('authOverlay');
+        if (authOverlay) authOverlay.style.display = 'none';
+
+        const adminUserEmail = document.getElementById('adminUserEmail');
+        if (adminUserEmail) adminUserEmail.innerText = 'Logged in as: test-admin@example.com';
+        if (adminUserName) adminUserName.innerText = 'Test administrator';
+        if (adminUserPhoto) adminUserPhoto.src = 'images/Villagante.jpg';
+
+        initDashboardListeners();
+        return;
+      }
+
+      if (user) {
+        document.getElementById('authOverlay').style.display = 'none';
+        document.getElementById('adminUserEmail').innerText = `Logged in as: ${user.email}`;
+        if (adminUserName) adminUserName.innerText = user.displayName || 'Administrator';
+        if (adminUserPhoto) {
+          adminUserPhoto.src = user.photoURL || 'images/Villagante.jpg';
+          adminUserPhoto.alt = `${user.displayName || 'Admin'} profile picture`;
+          adminUserPhoto.onerror = () => { adminUserPhoto.src = 'images/Villagante.jpg'; };
+        }
+        initDashboardListeners();
+      } else {
+        window.location.href = "admin.html";
+      }
+    });
+
+    async function handleLogout() {
+      try {
+        if (auth.currentUser) {
+          await auth.signOut();
+        }
+      } catch (e) {
+        console.warn('Logout warning:', e);
+      }
+
+      window.location.href = "index.html";
+    }
+
+    function showToast(toastId) {
+      const el = document.getElementById(toastId);
+      if (el) {
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 3000);
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/`/g, '&#96;');
+    }
+
+    function toggleProjectMenu() {
+      const menu = document.getElementById('projectSubmenu');
+      const arrow = document.getElementById('projectArrow');
+      menu.classList.toggle('open');
+      arrow.classList.toggle('open');
+    }
+
+    function switchDashboardTab(tabName) {
+      document.querySelectorAll('.nav-btn, .submenu-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.dashboard-tab-view').forEach(v => v.classList.remove('active-tab'));
+
+      const activeBtn = document.getElementById(`nav-${tabName}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (tabName === 'projects' || tabName === 'visitor') {
+        document.getElementById('nav-projects-parent').classList.add('active');
+        document.getElementById('projectSubmenu').classList.add('open');
+        document.getElementById('projectArrow').classList.add('open');
+      }
+
+      const selectedTab = document.getElementById(`tab-${tabName}`);
+      if (selectedTab) selectedTab.classList.add('active-tab');
+
+      const heading = document.getElementById('tabHeading');
+      const subheading = document.getElementById('tabSubheading');
+
+      if (tabName === 'settings') {
+        heading.innerText = 'Website Control Center';
+        subheading.innerText = 'Manage site title and hero subtitle.';
+      } else if (tabName === 'visitor') {
+        heading.innerText = 'Visitor Analytics';
+        subheading.innerText = 'Track real-time traffic and view metrics across all software projects.';
+      } else if (tabName === 'projects') {
+        heading.innerText = 'Upload & Manage Projects';
+        subheading.innerText = 'Upload, update, and publish Major and Minor software projects.';
+      } else if (tabName === 'announcements') {
+        heading.innerText = 'Announcements Manager';
+        subheading.innerText = 'Publish, edit, or remove live website banner announcements.';
+      } else if (tabName === 'friends') {
+        heading.innerText = 'Friends & Crew Manager';
+        subheading.innerText = 'Add, update, or remove friends from the gallery.';
+      } else if (tabName === 'flags') {
+        heading.innerText = 'Feature Flags';
+        subheading.innerText = 'Toggle interactive website components.';
+      } else if (tabName === 'ai-history') {
+        heading.innerText = 'AI Chat History';
+        subheading.innerText = 'Review, organize, and delete saved AI assistant conversations.';
+        if (typeof loadAdminAiHistory === 'function') loadAdminAiHistory();
+      } else if (tabName === 'contacts') {
+        heading.innerText = 'Contact Management';
+        subheading.innerText = 'Organize, review, and analyze messages sent from the Contact Me page.';
+        if (typeof startContactAdminListener === 'function') startContactAdminListener();
+      }
+    }
+
+    function initDashboardListeners() {
+      if (typeof startAiAvailabilityAdminListener === 'function') startAiAvailabilityAdminListener();
+      if (typeof loadAiAvailabilityHistory === 'function') loadAiAvailabilityHistory();
+      db.collection("site_control").doc("config").onSnapshot((doc) => {
+        if (doc.exists) {
+          const data = doc.data();
+          document.getElementById('siteTitle').value = data.siteTitle || '';
+          document.getElementById('siteSubtitle').value = data.siteSubtitle || '';
+        }
+      });
+
+      db.collection("projects").onSnapshot((snapshot) => {
+        const container = document.getElementById('projectsAdminList');
+        const items = [];
+        snapshot.forEach(doc => items.push({ id: doc.id, ...doc.data() }));
+
+        if (typeof renderVisitorAnalytics === 'function') {
+          renderVisitorAnalytics(items);
+        }
+
+        if (container) {
+          container.innerHTML = '';
+          if (snapshot.empty) {
+            container.innerHTML = `
+              <div style="text-align: center; padding: 30px 20px; background: rgba(15, 15, 15, 0.4); border: 1px dashed var(--border-color); border-radius: 12px;">
+                <p style="color: var(--text-muted); font-size: 0.95rem; font-weight: 600;">📂 No projects uploaded yet.</p>
+              </div>`;
+            return;
+          }
+
+          items.sort((a, b) => (b.createdAt?.toMillis ? b.createdAt.toMillis() : 0) - (a.createdAt?.toMillis ? a.createdAt.toMillis() : 0));
+
+          items.forEach((item) => {
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.innerHTML = `
+              <div style="display: flex; align-items: center; gap: 14px; flex: 1;">
+                <img src="${escapeHtml(item.image)}" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover; border: 1px solid var(--accent-color);" onerror="this.src='images/Gradient.jpg'">
+                <div>
+                  <strong style="color: #fff; font-size: 0.95rem;">${escapeHtml(item.title)} <span style="font-size: 0.75rem; color: var(--accent-color); text-transform: uppercase;">[${escapeHtml(item.category || 'major')}]</span></strong>
+                  <p style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(item.description || '').slice(0, 80)}...</p>
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="action-btn-edit" onclick="startEditProject('${item.id}', \`${escapeHtml(item.category || 'major')}\`, \`${escapeHtml(item.title || '')}\`, \`${escapeHtml(item.description || '')}\`, \`${escapeHtml(item.githubLink || '')}\`, \`${escapeHtml(item.demoLink || '')}\`, \`${escapeHtml(item.image || '')}\`)">Edit</button>
+                <button class="action-btn-delete" onclick="deleteProject('${item.id}')">Delete</button>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        }
+      }, (err) => console.error("Projects Error: ", err));
+
+      db.collection("announcements").onSnapshot((snapshot) => {
+        const container = document.getElementById('announcementsList');
+        if (!container) return;
+        container.innerHTML = '';
+
+        if (snapshot.empty) {
+          container.innerHTML = `<p style="color: var(--text-muted); font-size: 0.85rem;">No active announcements found.</p>`;
+          return;
+        }
+
+        snapshot.forEach((doc) => {
+          const item = doc.data();
+          const card = document.createElement('div');
+          card.className = 'item-card';
+          card.innerHTML = `
+            <div style="flex: 1;">
+              <p style="color: #fff; font-size: 0.9rem;">${escapeHtml(item.text || '')}</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="action-btn-edit" onclick="startEditAnnouncement('${doc.id}', \`${escapeHtml(item.text || '')}\`)">Edit</button>
+              <button class="action-btn-delete" onclick="deleteAnnouncement('${doc.id}')">Delete</button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }, (err) => console.error("Announcements Error: ", err));
+
+      db.collection("friends").onSnapshot((snapshot) => {
+        const container = document.getElementById('friendsAdminList');
+        if (!container) return;
+        container.innerHTML = '';
+
+        if (snapshot.empty) {
+          container.innerHTML = `<p style="color: var(--text-muted); font-size: 0.85rem;">No friends added yet.</p>`;
+          return;
+        }
+
+        snapshot.forEach((doc) => {
+          const item = doc.data();
+          const card = document.createElement('div');
+          card.className = 'item-card';
+          card.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 14px; flex: 1;">
+              <img src="${escapeHtml(item.image || '')}" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;" onerror="this.src='Friends/BlezelRamos.png'">
+              <div>
+                <strong style="color: #fff; font-size: 0.95rem;">${escapeHtml(item.name || '')}</strong>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(item.desc || '')}</p>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="action-btn-edit" onclick="startEditFriend('${doc.id}', \`${escapeHtml(item.name || '')}\`, \`${escapeHtml(item.desc || '')}\`, \`${escapeHtml(item.image || '')}\`)">Edit</button>
+              <button class="action-btn-delete" onclick="deleteFriend('${doc.id}')">Delete</button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }, (err) => console.error("Friends Error: ", err));
+
+      db.collection("site_control").doc("feature_flags").onSnapshot((doc) => {
+        if (doc.exists) {
+          const flags = doc.data();
+          document.getElementById('enableVideos').checked = !!flags.enableVideos;
+          document.getElementById('enableTimeline').checked = !!flags.enableTimeline;
+          document.getElementById('enableComments').checked = !!flags.enableComments;
+        }
+      });
+    }
+
+    async function saveSiteSettings(e) {
+      e.preventDefault();
+      const siteTitle = document.getElementById('siteTitle').value.trim();
+      const siteSubtitle = document.getElementById('siteSubtitle').value.trim();
+      const saveBtn = document.getElementById('saveSettingsBtn');
+
+      saveBtn.disabled = true;
+      try {
+        await db.collection("site_control").doc("config").set({
+          siteTitle,
+          siteSubtitle,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        showToast('statusInfo');
+      } catch (err) {
+        alert("Error saving settings: " + err.message);
+      } finally {
+        saveBtn.disabled = false;
+      }
+    }
+
+    let currentImageMode = 'link';
+
+    function switchImageSourceMode(mode) {
+      currentImageMode = mode;
+      const linkBtn = document.getElementById('tabModeLink');
+      const fileBtn = document.getElementById('tabModeFile');
+      const linkBox = document.getElementById('imageLinkBox');
+      const fileBox = document.getElementById('imageFileBox');
+
+      if (mode === 'link') {
+        linkBtn.classList.add('active');
+        fileBtn.classList.remove('active');
+        linkBox.style.display = 'block';
+        fileBox.style.display = 'none';
+        
+        const linkVal = document.getElementById('projectImageLinkInput').value.trim();
+        updateImagePreview(linkVal, 'Link / Local Path');
+      } else {
+        fileBtn.classList.add('active');
+        linkBtn.classList.remove('active');
+        fileBox.style.display = 'block';
+        linkBox.style.display = 'none';
+
+        const fileInput = document.getElementById('projectFileInput');
+        if (fileInput.files && fileInput.files[0]) {
+          handleFileUpload({ target: fileInput });
+        }
+      }
+    }
+
+    function handleImageLinkChange(val) {
+      updateImagePreview(val.trim(), 'Web Link / Path');
+    }
+
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64Url = e.target.result;
+        updateImagePreview(base64Url, `Uploaded: ${file.name}`);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateImagePreview(src, label) {
+      const hiddenInput = document.getElementById('projectImage');
+      const previewContainer = document.getElementById('imagePreviewContainer');
+      const previewBox = document.getElementById('imagePreviewBox');
+      const previewStatus = document.getElementById('previewStatusText');
+
+      hiddenInput.value = src;
+
+      if (src) {
+        previewBox.src = src;
+        previewStatus.innerText = label || 'Ready';
+        previewContainer.style.display = 'flex';
+      } else {
+        previewContainer.style.display = 'none';
+      }
+    }
+
+    async function saveProject(e) {
+      e.preventDefault();
+      const saveBtn = document.getElementById('saveProjectBtn');
+      
+      const id = document.getElementById('editingProjectId').value;
+      const category = document.getElementById('projectCategory').value;
+      const title = document.getElementById('projectTitle').value.trim();
+      const description = document.getElementById('projectDesc').value.trim();
+      const githubLink = document.getElementById('projectGithub').value.trim();
+      const demoLink = document.getElementById('projectDemo').value.trim();
+      const image = document.getElementById('projectImage').value.trim();
+
+      if (!image) {
+        alert("Please specify an image link or upload a file first!");
+        return;
+      }
+
+      saveBtn.disabled = true;
+      saveBtn.innerText = "Saving to Firestore...";
+
+      try {
+        const payload = {
+          category,
+          title,
+          description,
+          githubLink,
+          demoLink,
+          image,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        if (id) {
+          await db.collection("projects").doc(id).update(payload);
+        } else {
+          payload.views = 0;
+          payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+          await db.collection("projects").add(payload);
+        }
+
+        cancelProjectEdit();
+        showToast('statusProject');
+      } catch (err) {
+        console.error("Error saving project:", err);
+        alert("Error saving project: " + err.message);
+      } finally {
+        saveBtn.disabled = false;
+      }
+    }
+
+    function startEditProject(id, category, title, description, github, demo, image) {
+      document.getElementById('editingProjectId').value = id;
+      document.getElementById('projectCategory').value = category;
+      document.getElementById('projectTitle').value = title;
+      document.getElementById('projectDesc').value = description;
+      document.getElementById('projectGithub').value = github;
+      document.getElementById('projectDemo').value = demo;
+
+      document.getElementById('projectImageLinkInput').value = image || '';
+      switchImageSourceMode('link');
+
+      document.getElementById('projectFormHeading').innerText = 'Edit Project Details';
+      document.getElementById('saveProjectBtn').innerText = 'Update Project';
+      document.getElementById('cancelProjectEditBtn').style.display = 'inline-block';
+    }
+
+    function cancelProjectEdit() {
+      document.getElementById('editingProjectId').value = '';
+      document.getElementById('projectTitle').value = '';
+      document.getElementById('projectDesc').value = '';
+      document.getElementById('projectGithub').value = '';
+      document.getElementById('projectDemo').value = '';
+      document.getElementById('projectImage').value = '';
+      document.getElementById('projectImageLinkInput').value = '';
+      document.getElementById('projectFileInput').value = '';
+      
+      document.getElementById('imagePreviewContainer').style.display = 'none';
+
+      switchImageSourceMode('link');
+
+      document.getElementById('projectFormHeading').innerText = 'Upload / Edit Project';
+      document.getElementById('saveProjectBtn').innerText = 'Publish Project';
+      document.getElementById('cancelProjectEditBtn').style.display = 'none';
+    }
+
+    async function deleteProject(id) {
+      if (!confirm("Are you sure you want to delete this project?")) return;
+      try {
+        await db.collection("projects").doc(id).delete();
+      } catch (err) {
+        alert("Delete failed: " + err.message);
+      }
+    }
+
+    async function saveAnnouncement(e) {
+      e.preventDefault();
+      const id = document.getElementById('editingAnnouncementId').value;
+      const text = document.getElementById('announcementText').value.trim();
+      const publishBtn = document.getElementById('publishBtn');
+
+      publishBtn.disabled = true;
+      try {
+        if (id) {
+          await db.collection("announcements").doc(id).update({
+            text,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        } else {
+          await db.collection("announcements").add({
+            text,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+        cancelEditMode();
+        showToast('statusAnnounce');
+      } catch (err) {
+        alert("Error saving announcement: " + err.message);
+      } finally {
+        publishBtn.disabled = false;
+      }
+    }
+
+    function startEditAnnouncement(id, text) {
+      document.getElementById('editingAnnouncementId').value = id;
+      document.getElementById('announcementText').value = text;
+      document.getElementById('announcementFormHeading').innerText = 'Edit Announcement';
+      document.getElementById('publishBtn').innerText = 'Update Announcement';
+      document.getElementById('cancelEditBtn').style.display = 'inline-block';
+    }
+
+    function cancelEditMode() {
+      document.getElementById('editingAnnouncementId').value = '';
+      document.getElementById('announcementText').value = '';
+      document.getElementById('announcementFormHeading').innerText = 'Manage Announcements';
+      document.getElementById('publishBtn').innerText = 'Publish Announcement';
+      document.getElementById('cancelEditBtn').style.display = 'none';
+    }
+
+    async function deleteAnnouncement(id) {
+      if (!confirm("Are you sure you want to delete this announcement?")) return;
+      try {
+        await db.collection("announcements").doc(id).delete();
+      } catch (err) {
+        alert("Delete failed: " + err.message);
+      }
+    }
+
+    let friendImageMode = 'link';
+
+    function switchFriendImageSourceMode(mode) {
+      friendImageMode = mode;
+      const linkButton = document.getElementById('friendTabModeLink');
+      const fileButton = document.getElementById('friendTabModeFile');
+      const linkBox = document.getElementById('friendImageLinkBox');
+      const fileBox = document.getElementById('friendImageFileBox');
+
+      linkButton.classList.toggle('active', mode === 'link');
+      fileButton.classList.toggle('active', mode === 'file');
+      linkBox.style.display = mode === 'link' ? 'block' : 'none';
+      fileBox.style.display = mode === 'file' ? 'block' : 'none';
+
+      if (mode === 'link') handleFriendImageLinkChange(document.getElementById('friendImageLinkInput').value);
+    }
+
+    function handleFriendImageLinkChange(value) {
+      updateFriendImagePreview(value.trim(), 'Link / Local Path');
+    }
+
+    function handleFriendFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(loadEvent) {
+        updateFriendImagePreview(loadEvent.target.result, `Uploaded: ${file.name}`);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateFriendImagePreview(source, label) {
+      const hiddenInput = document.getElementById('friendImage');
+      const previewContainer = document.getElementById('friendImagePreviewContainer');
+      const previewBox = document.getElementById('friendImagePreviewBox');
+      const previewStatus = document.getElementById('friendPreviewStatusText');
+
+      hiddenInput.value = source || '';
+      if (!source) {
+        previewContainer.style.display = 'none';
+        return;
+      }
+
+      previewBox.src = source;
+      previewStatus.innerText = label || 'Ready to save';
+      previewContainer.style.display = 'flex';
+    }
+
+    async function saveFriend(e) {
+      e.preventDefault();
+      const id = document.getElementById('editingFriendId').value;
+      const name = document.getElementById('friendName').value.trim();
+      const desc = document.getElementById('friendDesc').value.trim();
+      const image = document.getElementById('friendImage').value.trim();
+      const saveBtn = document.getElementById('saveFriendBtn');
+
+      if (!image) {
+        alert('Please specify an image link or upload a file first!');
+        return;
+      }
+
+      saveBtn.disabled = true;
+      try {
+        if (id) {
+          await db.collection("friends").doc(id).update({
+            name, desc, image,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        } else {
+          await db.collection("friends").add({
+            name, desc, image,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+        cancelFriendEdit();
+        showToast('statusFriend');
+      } catch (err) {
+        alert("Error saving friend: " + err.message);
+      } finally {
+        saveBtn.disabled = false;
+      }
+    }
+
+    function startEditFriend(id, name, desc, image) {
+      document.getElementById('editingFriendId').value = id;
+      document.getElementById('friendName').value = name;
+      document.getElementById('friendDesc').value = desc;
+      document.getElementById('friendImageLinkInput').value = image;
+      document.getElementById('friendFileInput').value = '';
+      updateFriendImagePreview(image, 'Link / Local Path');
+      switchFriendImageSourceMode('link');
+      document.getElementById('friendFormHeading').innerText = 'Edit Friend Details';
+      document.getElementById('saveFriendBtn').innerText = 'Update Friend';
+      document.getElementById('cancelFriendEditBtn').style.display = 'inline-block';
+    }
+
+    function cancelFriendEdit() {
+      document.getElementById('editingFriendId').value = '';
+      document.getElementById('friendName').value = '';
+      document.getElementById('friendDesc').value = '';
+      document.getElementById('friendImage').value = '';
+      document.getElementById('friendImageLinkInput').value = '';
+      document.getElementById('friendFileInput').value = '';
+      updateFriendImagePreview('', 'Ready to save');
+      switchFriendImageSourceMode('link');
+      document.getElementById('friendFormHeading').innerText = 'Add New Friend';
+      document.getElementById('saveFriendBtn').innerText = 'Add Friend';
+      document.getElementById('cancelFriendEditBtn').style.display = 'none';
+    }
+
+    async function deleteFriend(id) {
+      if (!confirm("Are you sure you want to remove this friend?")) return;
+      try {
+        await db.collection("friends").doc(id).delete();
+      } catch (err) {
+        alert("Delete failed: " + err.message);
+      }
+    }
+
+    async function saveFeatureFlags(e) {
+      e.preventDefault();
+      const enableVideos = document.getElementById('enableVideos').checked;
+      const enableTimeline = document.getElementById('enableTimeline').checked;
+      const enableComments = document.getElementById('enableComments').checked;
+      const saveBtn = document.getElementById('saveFlagsBtn');
+
+      saveBtn.disabled = true;
+      try {
+        await db.collection("site_control").doc("feature_flags").set({
+          enableVideos,
+          enableTimeline,
+          enableComments,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        showToast('statusFlags');
+      } catch (err) {
+        alert("Error saving feature flags: " + err.message);
+      } finally {
+        saveBtn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

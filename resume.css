@@ -1,0 +1,427 @@
+/* ==========================================================================
+   RESUME CUSTOMIZATION & LAYOUT CONTROLS
+   Modify these CSS variables and root rules to freely position, resize, 
+   and adjust the height, column flow, and spacing of your resume.
+   ========================================================================== */
+:root {
+  /* Overall Container & Scaling */
+  --resume-max-width: 900px;
+  --resume-max-height: 4500px; /* Explicit height control to prevent glitches */
+  --resume-min-height: 960px; /* Give the resume page a longer visual structure for the profile-heavy sidebar */
+  --resume-border-radius: 12px;
+  --resume-bg: #ffffff;
+  --resume-text-color: #222222;
+
+  /* Top and Bottom Outer Gap Controls */
+  --resume-margin-top: 40px;
+  --resume-margin-bottom: 40px;
+
+  /* Header Controls */
+  --banner-bg: #595959;
+  --banner-height: 130px;
+  --avatar-size: 135px;
+  --avatar-scale: 1.25;
+  --avatar-top-offset: -95px; /* Pulls avatar up into the banner */
+
+  /* Column Layout Controls */
+  --resume-column-layout: 290px 1fr; 
+  --sidebar-bg: #f0f0f0;
+  --content-bg: #ffffff;
+
+  /* Spacing & Padding Controls */
+  --sidebar-top-padding: 150px;
+  --sidebar-horizontal-padding: 25px;
+  --sidebar-bottom-padding: 35px;
+  --sidebar-padding: var(--sidebar-top-padding) var(--sidebar-horizontal-padding) var(--sidebar-bottom-padding) var(--sidebar-horizontal-padding);
+  --sidebar-top-spacing: -10px; /* <--- ADJUST THIS TO PUSH SIDEBAR DOWNWARDS */
+  --content-padding: 25px 35px;
+  --content-top-spacing: 45px; /* <--- ADJUST THIS TO PUSH EDUCATION DOWNWARDS */
+  --education-accent-color: #535353;
+  --education-accent-width: 100%;
+  --education-accent-height: 120px;
+  --education-accent-x: 100px;
+  --education-accent-y: 0px;
+  --education-accent-sidebar-overlap: 290px;
+  --education-accent-z-index: 2;
+  --sidebar-z-index: auto;
+  --avatar-z-index: 4;
+  --resume-name-x:190px;
+  --resume-name-y: -30px;
+  --resume-name-bottom: 24px;
+  --resume-name-scale: 1.4;
+  --resume-role-x: 190px;
+  --resume-role-y: -20px;
+  --resume-role-scale: 1.4;
+  --section-gap: 20px;
+  
+  --item-margin: 12px;
+}
+
+/* Base Resume Wrapper */
+.resume-wrapper {
+  background: var(--resume-bg);
+  color: var(--resume-text-color);
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: var(--resume-border-radius);
+  padding: 0;
+  max-width: var(--resume-max-width);
+  min-height: var(--resume-min-height);
+  max-height: var(--resume-max-height);
+  margin: var(--resume-margin-top) auto var(--resume-margin-bottom) auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Top Dark Banner Header */
+.resume-top-banner {
+  background: var(--banner-bg);
+  height: var(--banner-height);
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 310px;
+}
+
+.resume-top-banner-content h1 {
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  margin: 0;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.resume-top-banner-content p {
+  color: #f1f2f6;
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 4px 0 0 0;
+  letter-spacing: 0.4px;
+}
+
+/* Main Grid Layout */
+.resume-grid-layout {
+  display: grid;
+  grid-template-columns: var(--resume-column-layout);
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .resume-grid-layout {
+    grid-template-columns: 1fr;
+  }
+  .resume-top-banner {
+    padding-left: 20px;
+    height: auto;
+    padding: 20px;
+  }
+}
+
+/* Left Sidebar (Controlled via Root variables for padding and downward shift) */
+.resume-sidebar {
+  background: var(--sidebar-bg);
+  padding: var(--sidebar-padding);
+  padding-top: calc(var(--sidebar-top-padding) + var(--sidebar-top-spacing));
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  border-right: 1px solid #dcdcdc;
+  position: relative;
+  z-index: var(--sidebar-z-index);
+  min-height: var(--resume-min-height);
+}
+
+.resume-photo-container {
+  text-align: center;
+  margin-top: var(--avatar-top-offset);
+  margin-bottom: 2px;
+  position: relative;
+  z-index: var(--avatar-z-index);
+}
+
+.resume-avatar {
+  width: calc(var(--avatar-size) * var(--avatar-scale));
+  height: calc(var(--avatar-size) * var(--avatar-scale));
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ffffff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  background: #ffffff;
+  position: relative;
+  z-index: calc(var(--avatar-z-index) + 1);
+}
+
+/* Connected Profile Card Style for About Me under Profile */
+.resume-profile-card {
+  background: #ffffff;
+  border-left: 4px solid #595959;
+  padding: 12px 14px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  margin-top: 4px;
+}
+
+.resume-profile-card-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #111111;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 2px;
+}
+
+.resume-profile-card-desc {
+  font-size: 0.78rem;
+  color: #444444;
+  line-height: 1.45;
+}
+
+.resume-sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.resume-sidebar-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #111111;
+  letter-spacing: 0.5px;
+  border-bottom: 1.5px solid #7f8c8d;
+  padding-bottom: 3px;
+  margin-bottom: 4px;
+}
+
+.resume-contact-item {
+  font-size: 0.82rem;
+  color: #333333;
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.resume-contact-item strong {
+  color: #111111;
+}
+
+.resume-sidebar-list {
+  list-style-type: disc;
+  padding-left: 16px;
+  color: #333333;
+  font-size: 0.81rem;
+  line-height: 1.4;
+}
+
+.resume-sidebar-list li {
+  margin-bottom: 4px;
+}
+
+/* Right Content Area */
+.resume-content-area {
+  padding: var(--content-padding);
+  padding-top: calc(25px + var(--content-top-spacing));
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+  background: var(--content-bg);
+}
+
+.resume-education-accent {
+  width: calc(var(--education-accent-width) + var(--education-accent-sidebar-overlap));
+  height: var(--education-accent-height);
+  background: var(--education-accent-color);
+  position: relative;
+  z-index: var(--education-accent-z-index);
+  left: calc(var(--education-accent-x) - var(--education-accent-sidebar-overlap));
+  top: var(--education-accent-y);
+}
+
+.resume-accent-name,
+.resume-accent-role {
+  position: absolute;
+  color: #ffffff;
+  z-index: 1;
+  transform-origin: left bottom;
+}
+
+.resume-accent-name {
+  left: var(--resume-name-x);
+  bottom: var(--resume-name-bottom);
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  line-height: 1.1;
+  transform: translateY(var(--resume-name-y)) scale(var(--resume-name-scale));
+}
+
+.resume-accent-role {
+  left: var(--resume-role-x);
+  bottom: calc(var(--resume-name-bottom) - 22px);
+  font-size: 0.85rem;
+  letter-spacing: 0.35px;
+  transform: translateY(var(--resume-role-y)) scale(var(--resume-role-scale));
+}
+
+.resume-top-info-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  padding: 12px 14px;
+  border: 1px solid #c9cfd3;
+  border-left: 4px solid #595959;
+  background: #fafafa;
+  font-size: 0.78rem;
+  color: #444444;
+}
+
+.resume-top-info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.resume-top-info-item strong,
+.resume-top-info-portfolio strong {
+  color: #111111;
+}
+
+.resume-top-info-box a {
+  color: #2980b9;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+@media (max-width: 600px) {
+  .resume-top-info-box {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+.resume-section-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #111111;
+  margin-bottom: 8px;
+  border-bottom: 1.5px solid #7f8c8d;
+  padding-bottom: 3px;
+  letter-spacing: 0.5px;
+}
+
+.resume-item {
+  margin-bottom: var(--item-margin);
+}
+
+.resume-item-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #111111;
+}
+
+.resume-item-sub {
+  font-size: 0.81rem;
+  color: #2980b9;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.resume-item-desc {
+  font-size: 0.82rem;
+  color: #444444;
+  line-height: 1.5;
+}
+
+.resume-list {
+  padding-left: 16px;
+  font-size: 0.81rem;
+  color: #444444;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.resume-list li {
+  margin-bottom: 4px;
+}
+
+/* Download CV Section at the Bottom */
+.resume-download-section {
+  margin: 0;
+  background: #f8f9fa;
+  padding: 22px;
+  border-top: 1px solid #dcdcdc;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.resume-download-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111111;
+}
+
+.resume-download-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+}
+
+/* Keep the resume layout stable while preserving its fade and blur reveal. */
+.resume-wrapper.reveal-card,
+.resume-wrapper.reveal-card.reveal-visible,
+.resume-wrapper .reveal-card,
+.resume-wrapper .reveal-card.reveal-visible {
+  transform: none;
+  transition: opacity 760ms ease, filter 760ms ease;
+}
+
+/* Restore the custom name and role positioning after the reveal stability rule. */
+.resume-wrapper .resume-accent-name.reveal-card,
+.resume-wrapper .resume-accent-name.reveal-card.reveal-visible {
+  left: var(--resume-name-x);
+  transform: translateY(var(--resume-name-y)) scale(var(--resume-name-scale));
+}
+
+.resume-wrapper .resume-accent-role.reveal-card,
+.resume-wrapper .resume-accent-role.reveal-card.reveal-visible {
+  left: var(--resume-role-x);
+  transform: translateY(var(--resume-role-y)) scale(var(--resume-role-scale));
+}
+
+.resume-filename-input {
+  flex-grow: 1;
+  background: #ffffff;
+  border: 1px solid #ced6e0;
+  color: #2f3640;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.resume-filename-input:focus {
+  border-color: #2980b9;
+}
+
+.resume-download-btn {
+  background: #595959;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.resume-download-btn:hover {
+  background: #333333;
+}

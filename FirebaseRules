@@ -1,0 +1,96 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null && request.auth.uid == "zvHqqxfQMUUDZyjM0a0jau9DRNr2";
+    }
+
+    match /admin_logs/{logId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /projects/{projectId} {
+      allow read: if true;
+      allow create, delete: if isAdmin();
+      
+      // Allow public visitors to update ONLY 'views' and 'hourlyViews'
+      allow update: if isAdmin() || (
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views', 'hourlyViews'])
+      );
+
+      // Subcollection for daily stats (7-day, 28-day, 90-day, YTD tracking)
+      match /dailyStats/{dateStr} {
+        allow read: if true;
+        
+        // For new daily document creation
+        allow create: if isAdmin() || (
+          request.resource.data.keys().hasOnly(['views'])
+        );
+        
+        // For existing daily document updates
+        allow update: if isAdmin() || (
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views'])
+        );
+      }
+    }
+
+    // Temporary test access for the availability switch only.
+    match /site_control/ai_status {
+      allow read, write: if true;
+    }
+
+    match /site_control/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /ai_availability_history/{eventId} {
+      // Temporary test access: availability history can be displayed without admin sign-in.
+      // Temporary test access for recording online/offline changes.
+      allow read: if true;
+      allow write: if true;
+    }
+
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /friends/{friendId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // AI chat sessions use a random document/session token generated in the browser.
+    // The token is required to match the document ID so sessions are addressed directly.
+    match /ai_chat_sessions/{sessionId} {
+      // Temporary test access: the admin dashboard can load all saved sessions without sign-in.
+      // Temporary test access: allow the dashboard Delete buttons to remove saved sessions.
+      allow read: if true;
+      allow create: if request.resource.data.sessionId == sessionId
+        && request.resource.data.keys().hasOnly(['sessionId', 'title', 'messages', 'createdAt', 'updatedAt']);
+      allow update: if request.resource.data.sessionId == resource.data.sessionId
+        && request.resource.data.keys().hasOnly(['sessionId', 'title', 'messages', 'createdAt', 'updatedAt']);
+      allow delete: if true;
+    }
+
+    match /contacts/{contactId} {
+      allow create: if request.resource.data.keys().hasOnly([
+        'name', 'email', 'phone', 'message', 'category',
+        'createdAt', 'modifiedAt', 'takenAt', 'dateKey'
+      ])
+      && request.resource.data.name is string
+      && request.resource.data.email is string
+      && request.resource.data.phone is string
+      && request.resource.data.message is string
+      && request.resource.data.category == 'new';
+      allow read, update, delete: if isAdmin();
+    }
+
+    // TEMPORARY TESTING ONLY: remove this catch-all rule before production.
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}

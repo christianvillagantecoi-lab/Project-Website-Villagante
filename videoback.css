@@ -1,0 +1,141 @@
+:root {
+  /* Videos-tab parallax container controls. */
+  --videos-parallax-container-width: 200%;
+  --videos-parallax-container-height: 900px;
+  --videos-parallax-container-x: 0px;
+  --videos-parallax-container-y: 0px;
+  --videos-parallax-container-scale: 1;
+
+  /* Videos-tab parallax media controls. */
+  --videos-parallax-media-width: 250%;
+  --videos-parallax-media-height: 245%;
+  --videos-parallax-media-x: 160px;
+  --videos-parallax-media-y: -390px;
+  --videos-parallax-media-scale: 0.6;
+  --videos-parallax-media-overscan: 500px;
+  --videos-parallax-scroll-speed: 1.3;
+
+
+  /* Videos-tab edge gradients. */
+  --videos-parallax-left-gradient-x: -360px;
+  --videos-parallax-left-gradient-y: 0px;
+  --videos-parallax-left-gradient-width: 180px;
+  --videos-parallax-left-gradient-height: 110%;
+  --videos-parallax-left-gradient-color: #000000;
+  --videos-parallax-left-gradient-opacity: 1;
+  --videos-parallax-left-gradient-start-opacity: 1;
+  --videos-parallax-left-gradient-end-opacity: 0;
+  --videos-parallax-left-gradient-start-position: 0%;
+  --videos-parallax-left-gradient-end-position: 100%;
+  --videos-parallax-right-gradient-x: -360px;
+  --videos-parallax-right-gradient-y: 0px;
+  --videos-parallax-right-gradient-width: 180px;
+  --videos-parallax-right-gradient-height: 110%;
+  --videos-parallax-right-gradient-color: #000000;
+  --videos-parallax-right-gradient-opacity: 1;
+  --videos-parallax-right-gradient-start-opacity: 1;
+  --videos-parallax-right-gradient-end-opacity: 0;
+  --videos-parallax-right-gradient-start-position: 0%;
+  --videos-parallax-right-gradient-end-position: 100%;
+
+  /* Videos-tab shadow controls. */
+  --videos-parallax-shadow-x: 0px;
+  --videos-parallax-shadow-y: 0px;
+  --videos-parallax-shadow-width: 200%;
+  --videos-parallax-shadow-height: 800px;
+  --videos-parallax-shadow-color: rgba(0, 0, 0, 0.7);
+  --videos-parallax-shadow-blur: 100px;
+}
+
+#page-videos {
+  position: relative;
+  isolation: isolate;
+}
+
+#page-videos::before,
+#page-videos::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#page-videos::before {
+  left: var(--videos-parallax-left-gradient-x);
+  top: var(--videos-parallax-left-gradient-y);
+  width: var(--videos-parallax-left-gradient-width);
+  height: var(--videos-parallax-left-gradient-height);
+  opacity: var(--videos-parallax-left-gradient-opacity);
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--videos-parallax-left-gradient-color) calc(var(--videos-parallax-left-gradient-start-opacity) * 100%), transparent) var(--videos-parallax-left-gradient-start-position),
+    color-mix(in srgb, var(--videos-parallax-left-gradient-color) calc(var(--videos-parallax-left-gradient-end-opacity) * 100%), transparent) var(--videos-parallax-left-gradient-end-position)
+  );
+}
+
+#page-videos::after {
+  right: var(--videos-parallax-right-gradient-x);
+  top: var(--videos-parallax-right-gradient-y);
+  width: var(--videos-parallax-right-gradient-width);
+  height: var(--videos-parallax-right-gradient-height);
+  opacity: var(--videos-parallax-right-gradient-opacity);
+  background: linear-gradient(
+    to left,
+    color-mix(in srgb, var(--videos-parallax-right-gradient-color) calc(var(--videos-parallax-right-gradient-start-opacity) * 100%), transparent) var(--videos-parallax-right-gradient-start-position),
+    color-mix(in srgb, var(--videos-parallax-right-gradient-color) calc(var(--videos-parallax-right-gradient-end-opacity) * 100%), transparent) var(--videos-parallax-right-gradient-end-position)
+  );
+}
+
+#page-videos > .videos-parallax {
+  position: absolute;
+  left: -50%;
+  top: var(--videos-parallax-container-y);
+  width: var(--videos-parallax-container-width);
+  height: var(--videos-parallax-container-height);
+  overflow: visible;
+  clip-path: inset(0 -100vw -100vh -100vw);
+  pointer-events: none;
+  z-index: 0;
+  transform: translateX(calc(-50% + var(--videos-parallax-container-x))) scale(var(--videos-parallax-container-scale));
+  transform-origin: center top;
+  opacity: 0.72;
+}
+
+#page-videos > .videos-parallax > .videos-parallax-media {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  width: max(var(--videos-parallax-media-width), calc(100% + var(--videos-parallax-media-overscan)));
+  height: max(var(--videos-parallax-media-height), calc(100% + var(--videos-parallax-media-overscan)));
+  object-fit: contain;
+  object-position: center;
+  transform: translate(calc(-50% + var(--videos-parallax-media-x)), calc(-50% + var(--videos-parallax-media-y) + var(--videos-parallax-scroll-y, 0px))) scale(var(--videos-parallax-media-scale));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+#page-videos > .videos-parallax-shadow {
+  position: absolute;
+  left:-50%;
+  top: var(--videos-parallax-shadow-y);
+  width: var(--videos-parallax-shadow-width);
+  height: var(--videos-parallax-shadow-height);
+  transform: translateX(calc(-50% + var(--videos-parallax-shadow-x)));
+  background: linear-gradient(
+    to right,
+    var(--videos-parallax-shadow-color) 0%,
+    var(--videos-parallax-shadow-color) 50%,
+    transparent 100%
+  );
+  box-shadow: none;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#page-videos > :not(.videos-parallax):not(.videos-parallax-shadow) {
+  position: relative;
+  z-index: 3;
+}

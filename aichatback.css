@@ -1,0 +1,134 @@
+:root {
+  /* AI Chatbox parallax container controls. */
+  --aichatbox-parallax-container-width: 200%;
+  --aichatbox-parallax-container-height: 900px;
+  --aichatbox-parallax-container-x: 900px;
+  --aichatbox-parallax-container-y: 0px;
+  --aichatbox-parallax-container-scale: 0.6;
+
+  /* AI Chatbox parallax media controls. */
+  --aichatbox-parallax-media-width: 250%;
+  --aichatbox-parallax-media-height: 370%;
+  --aichatbox-parallax-media-x:900px;
+  --aichatbox-parallax-media-y: 150px;
+  --aichatbox-parallax-media-scale: 0.4;
+  --aichatbox-parallax-media-overscan: 500px;
+  --aichatbox-parallax-scroll-speed: 1.2;
+
+  /* AI Chatbox edge gradients. */
+  --aichatbox-parallax-left-gradient-x: -360px;
+  --aichatbox-parallax-left-gradient-y: 0px;
+  --aichatbox-parallax-left-gradient-width: 180px;
+  --aichatbox-parallax-left-gradient-height: 110%;
+  --aichatbox-parallax-left-gradient-color: #000000;
+  --aichatbox-parallax-left-gradient-opacity: 1;
+  --aichatbox-parallax-left-gradient-start-opacity: 1;
+  --aichatbox-parallax-left-gradient-end-opacity: 0;
+  --aichatbox-parallax-left-gradient-start-position: 0%;
+  --aichatbox-parallax-left-gradient-end-position: 100%;
+  --aichatbox-parallax-right-gradient-x: -360px;
+  --aichatbox-parallax-right-gradient-y: 0px;
+  --aichatbox-parallax-right-gradient-width: 12180px;
+  --aichatbox-parallax-right-gradient-height: 110%;
+  --aichatbox-parallax-right-gradient-color: #000000;
+  --aichatbox-parallax-right-gradient-opacity: 1;
+  --aichatbox-parallax-right-gradient-start-opacity: 1;
+  --aichatbox-parallax-right-gradient-end-opacity: 0;
+  --aichatbox-parallax-right-gradient-start-position: 0%;
+  --aichatbox-parallax-right-gradient-end-position: 100%;
+
+  /* AI Chatbox shadow controls. */
+  --aichatbox-parallax-shadow-x: 0px;
+  --aichatbox-parallax-shadow-y: 0px;
+  --aichatbox-parallax-shadow-width: 300%;
+  --aichatbox-parallax-shadow-height: 200px;
+  --aichatbox-parallax-shadow-color: #000000;
+}
+
+#page-aichatbox {
+  position: relative;
+  isolation: isolate;
+}
+
+#page-aichatbox::before,
+#page-aichatbox::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#page-aichatbox::before {
+  left: var(--aichatbox-parallax-left-gradient-x);
+  top: var(--aichatbox-parallax-left-gradient-y);
+  width: var(--aichatbox-parallax-left-gradient-width);
+  height: var(--aichatbox-parallax-left-gradient-height);
+  opacity: var(--aichatbox-parallax-left-gradient-opacity);
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--aichatbox-parallax-left-gradient-color) calc(var(--aichatbox-parallax-left-gradient-start-opacity) * 100%), transparent) var(--aichatbox-parallax-left-gradient-start-position),
+    color-mix(in srgb, var(--aichatbox-parallax-left-gradient-color) calc(var(--aichatbox-parallax-left-gradient-end-opacity) * 100%), transparent) var(--aichatbox-parallax-left-gradient-end-position)
+  );
+}
+
+#page-aichatbox::after {
+  right: var(--aichatbox-parallax-right-gradient-x);
+  top: var(--aichatbox-parallax-right-gradient-y);
+  width: var(--aichatbox-parallax-right-gradient-width);
+  height: var(--aichatbox-parallax-right-gradient-height);
+  opacity: var(--aichatbox-parallax-right-gradient-opacity);
+  background: linear-gradient(
+    to left,
+    color-mix(in srgb, var(--aichatbox-parallax-right-gradient-color) calc(var(--aichatbox-parallax-right-gradient-start-opacity) * 100%), transparent) var(--aichatbox-parallax-right-gradient-start-position),
+    color-mix(in srgb, var(--aichatbox-parallax-right-gradient-color) calc(var(--aichatbox-parallax-right-gradient-end-opacity) * 100%), transparent) var(--aichatbox-parallax-right-gradient-end-position)
+  );
+}
+
+#page-aichatbox > .aichatbox-parallax {
+  position: absolute;
+  left: -50%;
+  top: var(--aichatbox-parallax-container-y);
+  width: var(--aichatbox-parallax-container-width);
+  height: var(--aichatbox-parallax-container-height);
+  overflow: visible;
+  clip-path: inset(0 -100vw -100vh -100vw);
+  pointer-events: none;
+  z-index: 3;
+  transform: translateX(calc(-50% + var(--aichatbox-parallax-container-x))) scale(var(--aichatbox-parallax-container-scale));
+  transform-origin: center top;
+  opacity: 0.72;
+}
+
+#page-aichatbox > .aichatbox-parallax > .aichatbox-parallax-media {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  width: max(var(--aichatbox-parallax-media-width), calc(100% + var(--aichatbox-parallax-media-overscan)));
+  height: max(var(--aichatbox-parallax-media-height), calc(100% + var(--aichatbox-parallax-media-overscan)));
+  object-fit: cover;
+  object-position: center;
+  transform: translate(calc(-50% + var(--aichatbox-parallax-media-x)), calc(-50% + var(--aichatbox-parallax-media-y) + var(--aichatbox-parallax-scroll-y, 0px))) scale(var(--aichatbox-parallax-media-scale));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+#page-aichatbox > .aichatbox-parallax-shadow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(100% - 48px);
+  height: calc(100% - 48px);
+  transform: translate(-50%, -50%);
+  background: transparent;
+  box-shadow: 0 0 80px 30px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  z-index: 2;
+}
+
+#page-aichatbox > :not(.aichatbox-parallax):not(.aichatbox-parallax-shadow) {
+  position: relative;
+  z-index: 3;
+}

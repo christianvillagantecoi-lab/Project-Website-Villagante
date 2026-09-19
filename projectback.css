@@ -1,0 +1,141 @@
+:root {
+  /* Projects-tab parallax container controls. */
+  --projects-parallax-container-width: 200%;
+  --projects-parallax-container-height: 900px;
+  --projects-parallax-container-x: 0px;
+  --projects-parallax-container-y: 0px;
+  --projects-parallax-container-scale: 1.2;
+
+  /* Projects-tab parallax media controls. */
+  --projects-parallax-media-width: 250%;
+  --projects-parallax-media-height: 235%;
+  --projects-parallax-media-x: 80px;
+  --projects-parallax-media-y: -480px;
+  --projects-parallax-media-scale: 0.6;
+  --projects-parallax-media-overscan: 500px;
+  --projects-parallax-scroll-speed: 1.2;
+
+  /* Projects-tab edge gradients. */
+  --projects-parallax-left-gradient-x: -360px;
+  --projects-parallax-left-gradient-y: 0px;
+  --projects-parallax-left-gradient-width: 180px;
+  --projects-parallax-left-gradient-height: 110%;
+  --projects-parallax-left-gradient-color: #000000;
+  --projects-parallax-left-gradient-opacity: 1;
+  --projects-parallax-left-gradient-start-opacity: 1;
+  --projects-parallax-left-gradient-end-opacity: 0;
+  --projects-parallax-left-gradient-start-position: 0%;
+  --projects-parallax-left-gradient-end-position: 100%;
+  --projects-parallax-right-gradient-x: -360px;
+  --projects-parallax-right-gradient-y: 0px;
+  --projects-parallax-right-gradient-width: 180px;
+  --projects-parallax-right-gradient-height: 110%;
+  --projects-parallax-right-gradient-color: #000000;
+  --projects-parallax-right-gradient-opacity: 1;
+  --projects-parallax-right-gradient-start-opacity: 1;
+  --projects-parallax-right-gradient-end-opacity: 0;
+  --projects-parallax-right-gradient-start-position: 0%;
+  --projects-parallax-right-gradient-end-position: 100%;
+
+  /* Projects-tab shadow controls. */
+  --projects-parallax-shadow-x: 0px;
+  --projects-parallax-shadow-y: 0px;
+  --projects-parallax-shadow-width: 200%;
+  --projects-parallax-shadow-height: 800px;
+  --projects-parallax-shadow-color: rgba(0, 0, 0, 0.7);
+  --projects-parallax-shadow-blur: 100px;
+}
+
+#page-projects {
+  position: relative;
+  isolation: isolate;
+}
+
+#page-projects::before,
+#page-projects::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#page-projects::before {
+  left: var(--projects-parallax-left-gradient-x);
+  top: var(--projects-parallax-left-gradient-y);
+  width: var(--projects-parallax-left-gradient-width);
+  height: var(--projects-parallax-left-gradient-height);
+  opacity: var(--projects-parallax-left-gradient-opacity);
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--projects-parallax-left-gradient-color) calc(var(--projects-parallax-left-gradient-start-opacity) * 100%), transparent) var(--projects-parallax-left-gradient-start-position),
+    color-mix(in srgb, var(--projects-parallax-left-gradient-color) calc(var(--projects-parallax-left-gradient-end-opacity) * 100%), transparent) var(--projects-parallax-left-gradient-end-position)
+  );
+}
+
+#page-projects::after {
+  right: var(--projects-parallax-right-gradient-x);
+  top: var(--projects-parallax-right-gradient-y);
+  width: var(--projects-parallax-right-gradient-width);
+  height: var(--projects-parallax-right-gradient-height);
+  opacity: var(--projects-parallax-right-gradient-opacity);
+  background: linear-gradient(
+    to left,
+    color-mix(in srgb, var(--projects-parallax-right-gradient-color) calc(var(--projects-parallax-right-gradient-start-opacity) * 100%), transparent) var(--projects-parallax-right-gradient-start-position),
+    color-mix(in srgb, var(--projects-parallax-right-gradient-color) calc(var(--projects-parallax-right-gradient-end-opacity) * 100%), transparent) var(--projects-parallax-right-gradient-end-position)
+  );
+}
+
+#page-projects > .projects-parallax {
+  position: absolute;
+  left: -50%;
+  top: var(--projects-parallax-container-y);
+  width: var(--projects-parallax-container-width);
+  height: var(--projects-parallax-container-height);
+  overflow: visible;
+  clip-path: inset(0 -100vw -100vh -100vw);
+  pointer-events: none;
+  z-index: 0;
+  transform: translateX(calc(-50% + var(--projects-parallax-container-x))) scale(var(--projects-parallax-container-scale));
+  transform-origin: center top;
+  opacity: 0.72;
+}
+
+#page-projects > .projects-parallax > .projects-parallax-media {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  display: block;
+  width: max(var(--projects-parallax-media-width), calc(100% + var(--projects-parallax-media-overscan)));
+  height: max(var(--projects-parallax-media-height), calc(100% + var(--projects-parallax-media-overscan)));
+  object-fit: contain;
+  object-position: center;
+  transform: translate(calc(-50% + var(--projects-parallax-media-x)), calc(-50% + var(--projects-parallax-media-y) + var(--projects-parallax-scroll-y, 0px))) scale(var(--projects-parallax-media-scale));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+#page-projects > .projects-parallax-shadow {
+  position: absolute;
+  left: calc(-50%);
+  top: var(--projects-parallax-shadow-y);
+  width: var(--projects-parallax-shadow-width);
+  height: var(--projects-parallax-shadow-height);
+  transform: translateX(var(--projects-parallax-shadow-x));
+  background: linear-gradient(
+    to right,
+    var(--projects-parallax-shadow-color) 0%,
+    var(--projects-parallax-shadow-color) 50%,
+    transparent 100%
+  );
+  box-shadow: none;
+  pointer-events: none;
+  z-index: 2;
+  display: block;
+}
+
+#page-projects > :not(.projects-parallax):not(.projects-parallax-shadow) {
+  position: relative;
+  z-index: 3;
+}

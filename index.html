@@ -1,0 +1,889 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Christian Villagante Portfolio</title>
+  <meta name="theme-color" content="#0f0f0f">
+  <meta property="og:title" content="Christian Villagante Portfolio">
+  <meta property="og:image" content="images/Villagante.jpg">
+  <link rel="icon" type="image/jpeg" href="images/Villagante.jpg">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="homeback.css">
+  <link rel="stylesheet" href="videoback.css">
+  <link rel="stylesheet" href="friendback.css">
+  <link rel="stylesheet" href="contactback.css">
+  <link rel="stylesheet" href="projectback.css">
+  <link rel="stylesheet" href="projects.css">
+  <!-- YOUTUBE-STYLE SETTINGS DRAWER STYLES -->
+  <link rel="stylesheet" href="settings.css">
+  <link rel="stylesheet" href="visitor.css">
+  <link rel="stylesheet" href="aichatbox.css">
+  <link rel="stylesheet" href="aichatback.css">
+  <link rel="stylesheet" href="resume.css">
+  <style>
+    /* Ensure the admin link matches button behavior */
+    .admin-platform-btn {
+      text-decoration: none;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO BANNER -->
+  <div class="banner-container">
+    <div class="parallax-banner" id="parallaxBanner"></div>
+  </div>
+
+  <!-- CHANNEL HEADER -->
+  <header class="channel-header">
+    <div class="profile-avatar"></div>
+    <div class="channel-details">
+      <h1 class="channel-title">Christian Villagante </h1>
+      <div class="channel-meta">
+        <a href="https://www.youtube.com/@KouseiLarsCII" target="_blank" rel="noopener noreferrer" class="channel-youtube-link">@KouseiLarsCII</a> •
+        <span id="subCount">Loading subscribers...</span> •
+        <span id="viewCount">Loading views...</span> •
+        <span id="videoCount">Loading videos...</span>
+      </div>
+    </div>
+    <a href="https://www.youtube.com/@KouseiLarsCII" target="_blank" rel="noopener noreferrer" class="subscribe-btn">Subscribe</a>
+  </header>
+
+  <!-- YOUTUBE-STYLE SIDE SETTINGS DRAWER (MULTI-VIEW HUB) -->
+  <div id="settingsBackdrop" class="settings-backdrop" onclick="toggleSettingsDrawer()"></div>
+  
+  <div id="settingsDrawer" class="settings-drawer">
+    
+    <!-- VIEW 1: MAIN SETTINGS MENU (FIRST PAGE) -->
+    <div id="drawerMainView" class="drawer-view active-view">
+      <div class="drawer-header">
+        <h3>⚙️ Control Center</h3>
+        <button class="drawer-close-btn" onclick="toggleSettingsDrawer()">✕</button>
+      </div>
+
+      <div class="drawer-body">
+        <div class="drawer-section-title">Menu Options</div>
+
+        <!-- Navigation item to open Theme view -->
+        <button class="drawer-menu-item" onclick="openDrawerSubView('theme')">
+          <div class="menu-item-left">
+            <span class="menu-icon">🎨</span>
+            <div class="menu-text">
+              <span class="menu-title">Appearance & Theme</span>
+              <span class="menu-sub">Customize colors & presets</span>
+            </div>
+          </div>
+          <span class="menu-arrow">❯</span>
+        </button>
+
+        <!-- Admin Login Button inside Cabinet Drawer -->
+        <a href="admin.html" class="drawer-menu-item" style="text-decoration: none; margin-top: 8px;">
+          <div class="menu-item-left">
+            <span class="menu-icon">🔐</span>
+            <div class="menu-text">
+              <span class="menu-title">Admin Log In</span>
+              <span class="menu-sub">Access admin dashboard</span>
+            </div>
+          </div>
+          <span class="menu-arrow">❯</span>
+        </a>
+
+        <button id="miniVideoDrawerButton" class="drawer-menu-item mini-video-drawer-button" type="button" onclick="openExistingMiniVideo()">
+          <span class="menu-item-left">
+            <span class="menu-icon">▶️</span>
+            <span class="menu-text">
+              <span class="menu-title">Mini Video</span>
+              <span class="menu-sub">Open the latest YouTube video</span>
+            </span>
+          </span>
+          <span class="menu-arrow">❯</span>
+        </button>
+
+        <div class="platform-divider"></div>
+
+        <div class="drawer-section-title">Features</div>
+
+        <!-- Future Features Zone inside the Drawer -->
+        <div class="drawer-future-zone">
+          <div class="zone-placeholder">
+            <span class="placeholder-icon">🚀</span>
+            <span class="placeholder-title">Future Features Zone</span>
+            <p class="placeholder-sub">Add custom tools, widgets, quick links, or shortcuts here later.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: THEME CUSTOMIZER (SUB-PAGE) -->
+    <div id="drawerThemeView" class="drawer-view">
+      <div class="drawer-header">
+        <button class="drawer-back-btn" onclick="openDrawerSubView('main')">← Back</button>
+        <h3>🎨 Appearance</h3>
+        <button class="drawer-close-btn" onclick="toggleSettingsDrawer()">✕</button>
+      </div>
+
+      <div class="drawer-body">
+        <div>
+          <div class="drawer-section-title">Presets</div>
+          <div class="theme-options-grid">
+            <button id="theme-btn-dark" class="theme-option-btn active" onclick="selectPresetTheme('dark')">
+              <div class="color-dot-preview dot-dark"></div>
+              <span>Dark</span>
+            </button>
+            <button id="theme-btn-light" class="theme-option-btn" onclick="selectPresetTheme('light')">
+              <div class="color-dot-preview dot-light"></div>
+              <span>Light</span>
+            </button>
+            <button id="theme-btn-cyber" class="theme-option-btn" onclick="selectPresetTheme('cyber')">
+              <div class="color-dot-preview dot-cyber"></div>
+              <span>Cyber Red</span>
+            </button>
+            <button id="theme-btn-midnight" class="theme-option-btn" onclick="selectPresetTheme('midnight')">
+              <div class="color-dot-preview dot-midnight"></div>
+              <span>Midnight</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <div class="drawer-section-title">Live Custom Colors</div>
+          
+          <div class="picker-row">
+            <span>Background Color</span>
+            <input type="color" id="bgPicker" value="#0f0f0f" onchange="updateCustomColor('--bg-color', this.value)">
+          </div>
+
+          <div class="picker-row">
+            <span>Card Background</span>
+            <input type="color" id="cardPicker" value="#1e1e26" onchange="updateCustomColor('--card-bg', this.value)">
+          </div>
+
+          <div class="picker-row">
+            <span>Text Color</span>
+            <input type="color" id="textPicker" value="#ffffff" onchange="updateCustomColor('--text-main', this.value)">
+          </div>
+
+          <div class="picker-row">
+            <span>Accent Color</span>
+            <input type="color" id="accentPicker" value="#ff4757" onchange="updateCustomColor('--accent-color', this.value)">
+          </div>
+        </div>
+
+        <button class="drawer-reset-btn" onclick="resetSettingsTheme()">Reset to Default</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NAVIGATION BAR -->
+  <nav class="nav-bar">
+    <div class="nav-container">
+      <a class="nav-item active" onclick="switchPage('home', this)">Home</a>
+      <a class="nav-item" onclick="switchPage('videos', this)">Videos</a>
+      <a class="nav-item" onclick="switchPage('projects', this)">Projects</a>
+      <a class="nav-item" onclick="switchPage('friends', this)">Friends</a>
+      <a class="nav-item" onclick="switchPage('timeline', this)">Live Timeline</a>
+      <a class="nav-item" onclick="switchPage('aichatbox', this)">AI Chatbox</a>
+      <a class="nav-item" onclick="switchPage('resume', this)">Resume</a>
+      <a class="nav-item" onclick="switchPage('contact', this)">Contact Me</a>
+    </div>
+  </nav>
+
+  <!-- 3-BAR MENU ICON -->
+  <button class="squeezed-3bar-trigger" onclick="toggleSettingsDrawer()" title="Open Settings Hub">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- MAIN CONTAINER -->
+  <main>
+
+    <!-- EXTENDED TALL LEFT PLATFORM BOX -->
+    <aside class="settings-platform-box">
+      
+      <!-- TOP LOGO & SETTINGS QUICK TRIGGER -->
+      <button class="compact-settings-trigger" onclick="toggleSettingsDrawer()" title="Open Settings Hub">
+        <span class="trigger-brand">
+          <span class="gear-icon">⚙️</span>
+          <span class="brand-text">Settings</span>
+        </span>
+        <span class="logo-dot"></span>
+      </button>
+
+      <!-- FIRST DIVIDER LINE -->
+      <div class="platform-divider"></div>
+
+      <!-- ADMIN LOG IN BUTTON (MATCHING SETTINGS BUTTON STYLE) -->
+      <a href="admin.html" class="compact-settings-trigger admin-platform-btn" title="Admin Log In">
+        <span class="trigger-brand">
+          <span class="gear-icon">🔐</span>
+          <span class="brand-text">Admin Log In</span>
+        </span>
+        <span class="logo-dot"></span>
+      </a>
+
+      <!-- DIVIDER LINE ABOVE MINI VIDEO -->
+      <div class="platform-divider"></div>
+
+      <button class="compact-settings-trigger mini-video-platform-btn" type="button" onclick="openExistingMiniVideo()" title="Mini Video">
+        <span class="trigger-brand">
+          <span class="gear-icon">▶️</span>
+          <span class="brand-text">Mini Video</span>
+        </span>
+        <span class="logo-dot"></span>
+      </button>
+
+      <!-- DIVIDER LINE ABOVE FUTURE FEATURES -->
+      <div class="platform-divider"></div>
+
+      <!-- FUTURE FEATURES SPACE CONTAINER -->
+      <div class="platform-future-zone">
+        <div class="zone-placeholder">
+          <span class="placeholder-icon">🚀</span>
+          <span class="placeholder-title">Future Features Zone</span>
+          <p class="placeholder-sub">Add custom tools, widgets, quick links, or shortcuts here later.</p>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- 1. MERGED HOME PAGE VIEW -->
+    <section id="page-home" class="page-view active-page">
+      <div class="home-parallax-container" aria-hidden="true">
+        <video class="home-parallax-media" autoplay muted loop playsinline preload="auto">
+          <source src="BG1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="home-parallax-shadow" aria-hidden="true"></div>
+
+      <div class="merged-home-layout">
+        
+        <!-- Featured Video Part -->
+        <div class="featured-home-section">
+          <h2 style="margin-bottom: 10px;">Featured Video</h2>
+          <div class="featured-container">
+            <div class="video-responsive">
+              <iframe id="featuredIframe" src="" allowfullscreen></iframe>
+              <div id="featuredVideoFallback" class="featured-video-fallback" hidden>
+                <div class="featured-fallback-icon">▶</div>
+                <strong>Featured video unavailable</strong>
+                <a id="featuredFallbackLink" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">Open YouTube</a>
+              </div>
+            </div>
+            <div class="featured-info">
+              <h3 id="featuredTitle">Loading Latest Video...</h3>
+              <p id="featuredDesc">Connecting to YouTube API...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- About Me Part -->
+        <div class="about-card-block">
+          <div class="about-layout">
+            <div class="about-left-column">
+              <div class="about-header-group">
+                <h2 class="about-main-title">About Me</h2>
+                <p class="about-subtitle">Web Designer & Video Editor</p>
+              </div>
+              <div class="about-text-content">
+                Welcome to my channel! I am a passionate content creator dedicated to sharing engaging, high-quality videos and building an awesome community. Whether you're here for entertainment, tutorials, or deep dives into my creative journey, my goal is to deliver content that keeps you hooked from start to finish. Hit that subscribe button and join me on this exciting ride!
+              </div>
+            </div>
+
+            <div class="about-image-wrapper">
+              <img src="images/Gradient.jpg" alt="Arch Background" class="about-arch-bg">
+              <img src="images/VTransparent.png" alt="Profile Cutout" class="about-transparent-person">
+            </div>
+          </div>
+        </div>
+
+        <!-- LIVE HOMEPAGE ANNOUNCEMENT BOX -->
+        <div id="homepageAnnouncementCard" class="announcement-banner-box" style="display: none;">
+          <div class="announcement-header-row">
+            <div class="announcement-badge">📢 Announcement</div>
+            <span id="homepageAnnouncementDate" class="announcement-date-tag"></span>
+          </div>
+          <div class="announcement-content-panel">
+            <p id="homepageAnnouncementText" class="announcement-text"></p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2. VIDEOS PAGE VIEW -->
+    <section id="page-videos" class="page-view">
+      <div class="videos-parallax" aria-hidden="true">
+        <video class="videos-parallax-media" autoplay muted loop playsinline preload="auto">
+          <source src="BG2.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="videos-parallax-shadow" aria-hidden="true"></div>
+      <div class="videos-section-wrapper">
+        <div class="videos-top-layer">
+          <div class="videos-header-bar">
+            <h2>Channel Videos</h2>
+            <div class="search-box">
+              <svg class="search-icon" viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+              </svg>
+              <input type="text" id="videoSearchInput" placeholder="Search videos..." oninput="handleVideoFilterSearch()">
+            </div>
+          </div>
+
+          <div class="filter-pills-bar">
+            <button class="pill-btn active" onclick="setSortMode('latest', this)">Latest</button>
+            <button class="pill-btn" onclick="setSortMode('popular', this)">Popular</button>
+            <button class="pill-btn" onclick="setSortMode('oldest', this)">Oldest</button>
+          </div>
+        </div>
+
+        <div id="videoGrid" class="video-grid">Loading channel uploads...</div>
+      </div>
+    </section>
+
+    <!-- 3. FRIENDS PAGE VIEW -->
+    <section id="page-friends" class="page-view">
+      <div class="friends-parallax" aria-hidden="true">
+        <video class="friends-parallax-media" autoplay muted loop playsinline preload="auto">
+          <source src="BG5.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="friends-parallax-shadow" aria-hidden="true"></div>
+      <div class="friends-section-wrapper">
+        <h2 style="margin-bottom: 6px;">My Friends & Crew</h2>
+        <p style="color: var(--text-muted); margin-bottom: 24px;">A gallery wall of awesome people I collaborate and connect with.</p>
+        
+        <div class="friends-grid">
+          <div class="friend-card">
+            <div class="friend-card-thumb-wrapper">
+              <img src="Friends/BlezelRamos.png" alt="Friend 1">
+            </div>
+            <div class="friend-card-body">
+              <h3 class="friend-card-title">Blezel Meliz A. Ramos</h3>
+              <p class="friend-card-desc">Founder & CEO of CYBERSCAPE Corp</p>
+            </div>
+          </div>
+
+          <div class="friend-card">
+            <div class="friend-card-thumb-wrapper">
+              <img src="Friends/IvyNadal.png" alt="Friend 2">
+            </div>
+            <div class="friend-card-body">
+              <h3 class="friend-card-title">Ivy D. Nadal</h3>
+              <p class="friend-card-desc">Chief Technology Officer (CTO)</p>
+            </div>
+          </div>
+
+          <div class="friend-card">
+            <div class="friend-card-thumb-wrapper">
+              <img src="Friends/Ruthy.png" alt="Friend 3">
+            </div>
+            <div class="friend-card-body">
+              <h3 class="friend-card-title">Ruth Kaphn</h3>
+              <p class="friend-card-desc">Executive Vice President (EVP)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. LIVE TIMELINE PAGE VIEW -->
+    <section id="page-timeline" class="page-view">
+      <div class="timeline-section-wrapper">
+        <div class="analytics-box">
+          <h2 style="text-align: center; margin-bottom: 20px;">🔥 KouseiLarsCII Channel Analytics</h2>
+
+          <div class="tabs-header">
+            <button id="tabBtn1" class="tab-btn active" onclick="switchAnalyticsTab('live')">⚡ Live Top 10 Views</button>
+            <button id="tabBtn2" class="tab-btn" onclick="switchAnalyticsTab('timeline')">🏎️ Timeline Bar Race</button>
+          </div>
+
+          <div id="liveTabContent">
+            <div id="leaderboard" class="leaderboard">Loading real-time channel data...</div>
+          </div>
+
+          <div id="timelineTabContent" class="hidden">
+            <div class="controls-panel">
+              <div class="controls-top">
+                <button id="playBtn" class="btn-play" onclick="toggleRace()">▶ Play</button>
+                <div id="dateDisplay" class="date-display">Loading...</div>
+              </div>
+
+              <div id="progressTrack" class="progress-container">
+                <div id="progressFill" class="progress-fill"></div>
+                <div id="progressHandle" class="progress-handle"></div>
+              </div>
+
+              <div class="speed-controls">
+                <span class="speed-label">SPEED:</span>
+                <button class="speed-btn" onclick="setSpeed(0.33, this)">🐢 Slow 3x</button>
+                <button class="speed-btn" onclick="setSpeed(0.5, this)">🐢 Slow 2x</button>
+                <button class="speed-btn active" onclick="setSpeed(1, this)">▶ 1x Normal</button>
+                <button class="speed-btn" onclick="setSpeed(2, this)">⚡ Fast 2x</button>
+                <button class="speed-btn" onclick="setSpeed(3, this)">🚀 Fast 3x</button>
+              </div>
+            </div>
+
+            <div id="raceContainer" class="race-container"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+<!-- 5. PROJECTS PAGE VIEW -->
+    <section id="page-projects" class="page-view">
+      <div class="projects-parallax" aria-hidden="true">
+        <video class="projects-parallax-media" autoplay muted loop playsinline preload="auto">
+          <source src="BG3.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="projects-parallax-shadow" aria-hidden="true"></div>
+      <div class="projects-section-wrapper">
+        <div style="margin-bottom: 20px;">
+          <h2>Portfolio Projects</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Explore my major software developments and mini-projects.</p>
+        </div>
+
+        <!-- Major & Minor Sub-Navigation Buttons -->
+        <div class="projects-nav-tabs">
+          <button class="project-tab-btn active" data-category="major" onclick="switchProjectCategory('major', this)">
+            <span>🔥</span> Major Projects
+          </button>
+          <button class="project-tab-btn" data-category="minor" onclick="switchProjectCategory('minor', this)">
+            <span>🛠️</span> Minor Projects
+          </button>
+        </div>
+
+        <!-- Projects Display Grid -->
+        <div id="projectsGrid" class="projects-grid">
+          <p style="color: var(--text-muted); padding: 20px 0;">Loading projects...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. CONTACT PAGE VIEW -->
+    <section id="page-contact" class="page-view">
+      <div class="contact-parallax" aria-hidden="true">
+        <video class="contact-parallax-media" autoplay muted loop playsinline preload="auto">
+          <source src="BG6.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="contact-parallax-shadow" aria-hidden="true"></div>
+      <div class="home-contact-section contact-page-section" aria-labelledby="contactHeading">
+        <div class="contact-profile-column">
+          <div class="contact-hero-image">
+            <div class="contact-image-carousel" aria-label="Profile image carousel">
+              <img class="contact-carousel-image is-front" src="ContactPic/picture2.jpg" alt="Christian Villagante profile image">
+              <img class="contact-carousel-image" src="ContactPic/picture6.jpg" alt="Christian Villagante profile image">
+              <img class="contact-carousel-image" src="ContactPic/picture5.jpg" alt="Christian Villagante profile image">
+              <img class="contact-carousel-image" src="ContactPic/picture3.jpg" alt="Christian Villagante profile image">
+              <img class="contact-carousel-image" src="ContactPic/picture12.jpg" alt="Christian Villagante profile image">
+              <img class="contact-carousel-image" src="ContactPic/picture16.jpg" alt="Christian Villagante profile image">
+              <img class="contact-carousel-image" src="ContactPic/picture17.jpg" alt="Christian Villagante profile image">
+              <img class="contact-carousel-image" src="ContactPic/picture19.jpg" alt="Christian Villagante profile image">
+            </div>
+          </div>
+          <div class="contact-section-intro">
+            <span class="section-kicker">LET'S CONNECT</span>
+            <h2 id="contactHeading">Contact Me</h2>
+            <p>Have a project, collaboration, or question? Send a message and I’ll get back to you.</p>
+          </div>
+        </div>
+
+        <form class="contact-form" onsubmit="submitContactForm(event)">
+          <div class="contact-form-grid">
+            <div class="contact-field">
+              <label for="contactName">Name</label>
+              <input type="text" id="contactName" name="name" placeholder="Your name" autocomplete="name" required>
+            </div>
+            <div class="contact-field">
+              <label for="contactEmail">Email</label>
+              <input type="email" id="contactEmail" name="email" placeholder="you@example.com" autocomplete="email" required>
+            </div>
+            <div class="contact-field">
+              <label for="contactPhone">Cell Phone Number</label>
+              <input type="tel" id="contactPhone" name="phone" placeholder="09XX XXX XXXX" autocomplete="tel" required>
+            </div>
+            <div class="contact-field contact-field-message">
+              <label for="contactMessage">Message</label>
+              <textarea id="contactMessage" name="message" rows="5" placeholder="Tell me a little about your message..." required></textarea>
+            </div>
+          </div>
+          <div class="contact-form-footer">
+            <span class="contact-form-note">Your message will be delivered securely.</span>
+            <button type="submit" class="contact-submit-btn">Submit Message <span aria-hidden="true">→</span></button>
+          </div>
+        </form>
+
+      </div>
+    </section>
+  </main>
+
+  <div id="contactSuccessPopup" class="contact-success-popup" role="status" aria-live="polite" aria-hidden="true">
+    <strong>Message sent</strong>
+    <span>Thank you for reaching out. I'll get back to you soon.</span>
+    <button type="button" onclick="closeContactSuccessPopup()" aria-label="Close message">✕</button>
+  </div>
+
+  <div id="miniVideoWarning" class="mini-video-warning" role="status" aria-live="polite" aria-hidden="true">
+    <span class="mini-video-warning-icon" aria-hidden="true">!</span>
+    <span>Mini video is already open</span>
+  </div>
+
+  <!-- 7. AI CHATBOX PAGE VIEW -->
+    <section id="page-aichatbox" class="page-view">
+      <div class="aichatbox-parallax" aria-hidden="true">
+        <video class="aichatbox-parallax-media" autoplay muted loop playsinline preload="auto">
+          <source src="BG4.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="aichatbox-parallax-shadow" aria-hidden="true"></div>
+      <div class="ai-chat-wrapper">
+        <div class="ai-chat-header">
+          <div class="ai-profile">
+            <div class="ai-avatar-wrap">
+              <img src="images/Villagante.jpg" alt="Kousei AI profile" class="ai-avatar">
+              <span class="ai-online-dot" aria-label="Online"></span>
+            </div>
+            <div class="ai-profile-copy">
+              <div class="ai-profile-name">Kousei AI</div>
+              <div class="ai-profile-status" data-ai-availability>Checking AI availability...</div>
+            </div>
+            <span class="ai-header-mark" aria-hidden="true">✦</span>
+          </div>
+          <div class="ai-chat-intro">
+            <h2>Ask about Christian</h2>
+            <p>I can help you explore his experience, skills, education, projects, YouTube channel, and ways to get in touch.</p>
+            <div class="ai-chat-actions">
+              <button type="button" class="ai-chat-action-btn" onclick="startNewAiChat()">＋ New chat</button>
+              <button type="button" class="ai-chat-action-btn" onclick="toggleAiChatHistory()">▤ History</button>
+            </div>
+          </div>
+        </div>
+        <div id="aiChatMessages" class="ai-chat-messages">
+          <div class="ai-message-row bot-row">
+            <img src="images/Villagante.jpg" alt="Kousei AI" class="message-avatar">
+            <div class="ai-message bot"><span class="message-author">Kousei AI</span>Hello! Ask me anything about Christian's resume, skills, education, projects, or contact details.</div>
+          </div>
+        </div>
+        <aside id="aiChatHistory" class="ai-chat-history" hidden aria-label="Chat history">
+          <div class="ai-history-heading"><strong>Chat history</strong><button type="button" onclick="toggleAiChatHistory()" aria-label="Close history">×</button></div>
+          <div id="aiChatHistoryList" class="ai-chat-history-list"></div>
+        </aside>
+        <div class="ai-chat-input-row">
+          <label for="aiChatInput" class="sr-only">Ask Kousei AI a question</label>
+          <input type="text" id="aiChatInput" class="ai-chat-input" placeholder="Ask about experience, projects, or skills..." autocomplete="off" onkeydown="if(event.key==='Enter') sendAiMessage()">
+          <button class="ai-send-btn" data-ai-send onclick="sendAiMessage()" aria-label="Send message"><span aria-hidden="true">➤</span><span>Send</span></button>
+        </div>
+        <div class="ai-suggested-prompts" aria-label="Suggested questions">
+          <button type="button" onclick="askAiPrompt('What questions can I ask you?')">Question ideas</button>
+          <button type="button" onclick="askAiPrompt('What are Christian’s strongest skills?')">Strongest skills</button>
+          <button type="button" onclick="askAiPrompt('Tell me about his projects')">Projects</button>
+          <button type="button" onclick="askAiPrompt('How can I contact Christian?')">Contact</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. RESUME PAGE VIEW -->
+    <section id="page-resume" class="page-view">
+      <div class="resume-wrapper">
+        <div class="resume-grid-layout">
+          
+          <!-- LEFT SIDEBAR -->
+          <div class="resume-sidebar">
+            <div class="resume-photo-container">
+              <!-- Replace src with your actual photo path or URL -->
+              <img src="images/picture9.jpg" alt="Christian Villagante" class="resume-avatar">
+            </div>
+
+            <!-- RELOCATED ABOUT ME CONNECTED PROFILE CARD -->
+            <div class="resume-profile-card">
+              <div class="resume-profile-card-title">About Me</div>
+              <p class="resume-profile-card-desc">
+                A dedicated, diligent, and hardworking 3rd-year Bachelor of Science in Information Technology student at Philippine Christian University. I combine a strong technical foundation in frontend web development and backend database management with a creative skill set in graphic design, photo manipulation, and advanced video editing. Known for my structured approach to organizing clean code and my friendly, collaborative nature, I am looking to secure an IT Practicum position where I can deliver impactful web, application, or multimedia solutions.
+              </p>
+            </div>
+
+            <div class="resume-sidebar-section" style="margin-top: 4px;">
+              <div class="resume-sidebar-title">Contact</div>
+              <div class="resume-contact-item"><strong>Phone:</strong><br>09298827887</div>
+              <div class="resume-contact-item"><strong>Email:</strong><br>villagante2004@gmail.com</div>
+              <div class="resume-contact-item"><strong>Address:</strong><br>2477 Coral St. San Andres Bukid Manila City</div>
+            </div>
+
+            <div class="resume-sidebar-section">
+              <div class="resume-sidebar-title">Professional Skills</div>
+              <ul class="resume-sidebar-list">
+                <li><strong>Web Programming:</strong> HTML5 / CSS3 / JavaScript / Python</li>
+                <li><strong>Database Engines:</strong> SQL / MySQL</li>
+                <li><strong>Video Software:</strong> Adobe Premiere Pro / DaVinci Resolve / CapCut</li>
+                <li><strong>Graphic Design:</strong> Adobe Photoshop</li>
+                <li><strong>Microsoft:</strong> Word, Excel, PDF</li>
+              </ul>
+            </div>
+
+            <div class="resume-sidebar-section">
+              <div class="resume-sidebar-title">Personal Skills</div>
+              <ul class="resume-sidebar-list">
+                <li>Diligent & Hardworking</li>
+                <li>Code Organization & Structure</li>
+                <li>Friendly & Collaborative Communication</li>
+                <li>Time Management & Adaptability</li>
+                <li>Problem Solving & Analytical Thinking</li>
+              </ul>
+            </div>
+
+            <div class="resume-sidebar-section">
+              <div class="resume-sidebar-title">Language</div>
+              <ul class="resume-sidebar-list">
+                <li>English</li>
+                <li>Tagalog</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- RIGHT CONTENT AREA -->
+          <div class="resume-content-area">
+
+            <div class="resume-education-accent">
+              <div class="resume-accent-name">CHRISTIAN VILLAGANTE</div>
+              <div class="resume-accent-role">Graphic &amp; Web Designer</div>
+            </div>
+
+            <div>
+              <div class="resume-section-title">EDUCATION</div>
+
+              <div class="resume-item">
+          <!-- 7. AI CHATBOX PAGE VIEW -->
+                <div class="resume-item-sub">Philippine Christian University (Manila) • 2023 - Present (Expected Graduation: 2027)</div>
+                <ul class="resume-list">
+                  <li>Current Status: Incoming 4th-Year Undergraduate Student</li>
+                  <li>Relevant Coursework: Information Assurance and Security, Database Systems, Web Development, Application Design.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div>
+              <div class="resume-section-title">PROJECTS & ACADEMIC EXPERIENCE</div>
+              <p class="resume-item-desc" style="margin-bottom: 10px;">
+                <strong>Portfolio:</strong> <a href="https://christianvillagantecoi-lab.github.io/VillagantePortfolio.netlify.app/index.html#home" target="_blank" style="color: var(--accent-color); word-break: break-all;">View Live Portfolio</a>
+              </p>
+
+              <div class="resume-item">
+                <div class="resume-item-title">FRONTEND WEB DEVELOPER & DESIGNER</div>
+                <div class="resume-item-sub">Project: Functionable Website Portfolio</div>
+                <ul class="resume-list">
+                  <li>Developed an interactive frontend website utilizing clean, well-organized and modular HTML5, CSS3, and JavaScript architectures.</li>
+                  <li>Focused on seamless UI/UX workflows, optimizing responsiveness, cross-browser compatibility, and fast rendering times.</li>
+                </ul>
+              </div>
+
+              <div class="resume-item">
+                <div class="resume-item-title">DATABASE & WEB APPLICATION DEVELOPER</div>
+                <div class="resume-item-sub">Project: Online Book Store Web Application</div>
+                <ul class="resume-list">
+                  <li>Engineered a dynamic database-driven e-commerce platform for browsing, filtering, and purchasing books using Visual Studio.</li>
+                  <li>Designed and mapped a relational database schema using SQL/MySQL to manage inventories, authors, book categories, and user accounts.</li>
+                  <li>Implemented backend data-retrieval logic to dynamically display book information and handle mock cart checkouts safely.</li>
+                </ul>
+              </div>
+
+              <div class="resume-item">
+                <div class="resume-item-title">DIGITAL MEDIA & CONTENT MANAGEMENT SYSTEMS</div>
+                <div class="resume-item-sub">Multimedia Asset Optimization & Technical Workflow Project</div>
+                <ul class="resume-list">
+                  <li>Managed, processed, and optimized digital media assets using structured data workflows to ensure efficient file compression, rendering, and cross-platform compatibility.</li>
+                  <li>Leveraged digital media tools (Adobe Premiere Pro, DaVinci Resolve, Adobe Photoshop, CapCut) for technical visual asset creation, UI/UX graphic design, and media resource deployment.</li>
+                  <li>Configured and optimized high-definition digital media files, balancing resolution, bitrate, and rendering speed for fast-paced web and cloud storage delivery.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div>
+              <div class="resume-section-title">AWARDS</div>
+              <ul class="resume-list" style="list-style-type: disc;">
+                <li>1st Year Outstanding Dean's Lister (June 18, 2024)</li>
+                <li>2nd Year Outstanding Dean's Lister (June 28, 2025)</li>
+                <li>3rd Year Outstanding Dean's Lister (June 2, 2026)</li>
+                <li>Outstanding Performance in Object Oriented Programming (OOP) Certificate (April 30, 2025)</li>
+              </ul>
+            </div>
+
+            <div>
+              <div class="resume-section-title">REFERENCES</div>
+              <div class="resume-item">
+                <div class="resume-item-title">John Joshua E. Mendoza, MIT</div>
+                <div class="resume-item-sub">Program Head, Bachelor of Science in Information Technology • Philippine Christian University</div>
+                <div class="resume-item-desc">
+                  Phone: 09544713059<br>
+                  Email: John.mendoza@pcu.edu.ph
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- DOWNLOAD CV SECTION AT THE VERY BOTTOM -->
+        <div class="resume-download-section">
+          <div class="resume-download-title">📥 Download Your Custom CV File</div>
+          <p style="color: var(--text-muted); font-size: 0.85rem; text-align: center; margin: 0;">Enter your preferred filename below and click download to save the PDF document.</p>
+          <div class="resume-download-row">
+            <input type="text" id="pdfFilenameInput" class="resume-filename-input" value="Resume-Villagante.pdf" placeholder="Enter file name (e.g. Resume-Villagante.pdf)">
+            <button class="resume-download-btn" onclick="downloadResumePdf()">Download PDF</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  
+  <!-- GLOBAL FOOTER CONTACT SECTION -->
+  <footer class="contact-container">
+    <div class="contact-brand-title">KouseiLarsCII</div>
+    <p class="contact-tagline">Feel free to reach out for collaborations or social connection!</p>
+
+    <div class="social-links-grid">
+      <a href="https://www.facebook.com/profile.php?id=61578658090423" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H7.5v-3H10V9.5C10 7.01 11.49 5.6 13.78 5.6c1.1 0 2.25.2 2.25.2v2.47h-1.27c-1.23 0-1.62.77-1.62 1.56V12h2.78l-.44 3h-2.34v6.8c4.56-.93 8-4.96 8-9.8z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/natsumihamasakicii/" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@arimakouseilars?lang=en" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="TikTok">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 3c.3 1.8 1.3 3.1 3.5 3.2v3.1c-1.4 0-2.6-.4-3.5-1.1v6.4c0 4-2.8 6.4-6.2 6.4-3.1 0-5.3-2.2-5.3-5.1 0-3.1 2.5-5.4 5.8-5.4.3 0 .7 0 1 .1v3.2c-.3-.1-.6-.2-1-.2-1.4 0-2.5.9-2.5 2.2 0 1.1.8 2 2 2 1.3 0 2.2-.8 2.2-2.6V3h4z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@KouseiLarsCII" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+    </div>
+
+    <div class="contact-details-row">
+      <a href="mailto:christian.villagante.coi@pcu.edu.ph" class="contact-info-item">
+        ✉️ christian.villagante.coi@pcu.edu.ph
+      </a>
+      <span class="contact-info-item">
+        📞 09298827887
+      </span>
+    </div>
+  </footer>
+
+  <button id="floatingAiLauncher" class="floating-ai-launcher" type="button" title="AI Chat Assistant" aria-label="Open AI Chat Assistant" onclick="openFloatingAiChat()">
+    <span class="floating-ai-launcher-avatar"><img src="images/Villagante.jpg" alt="AI Chat Assistant"><span class="ai-online-dot floating-ai-launcher-dot"></span></span>
+    <span class="floating-ai-label">AI Chat Assistant</span>
+  </button>
+  <aside id="floatingAiPanel" class="floating-ai-panel" hidden aria-label="Mini AI chat assistant">
+    <div class="floating-ai-panel-header">
+      <span class="floating-ai-avatar-wrap"><img src="images/Villagante.jpg" alt="Kousei AI"><span class="ai-online-dot floating-ai-online-dot"></span></span>
+      <span class="floating-ai-panel-title">Kousei AI <small data-ai-availability>Checking...</small></span>
+      <button class="floating-ai-panel-close" type="button" onclick="closeFloatingAiChat()" aria-label="Close AI chat">×</button>
+    </div>
+    <div id="floatingAiMessages" class="floating-ai-panel-messages"></div>
+    <aside id="floatingAiHistory" class="floating-ai-history" hidden aria-label="Mini chat history">
+      <div class="floating-ai-history-heading">
+        <strong>Chat history</strong>
+        <button type="button" onclick="toggleFloatingAiHistory(false)" aria-label="Close mini chat history">×</button>
+      </div>
+      <div id="floatingAiHistoryList" class="floating-ai-history-list"></div>
+    </aside>
+    <div class="floating-ai-panel-input">
+      <input id="floatingAiInput" type="text" placeholder="Ask Kousei AI..." autocomplete="off" onkeydown="if(event.key==='Enter') sendFloatingAiMessage()">
+      <button type="button" onclick="sendFloatingAiMessage()" aria-label="Send message">➤</button>
+    </div>
+    <div class="floating-ai-panel-actions">
+      <button type="button" onclick="startFloatingNewAiChat()">New chat</button>
+      <button type="button" onclick="toggleFloatingAiHistory()">History</button>
+      <button type="button" onclick="openFullAiChatPage()">Go to AI Chat</button>
+    </div>
+  </aside>
+
+  <!-- VIDEO MODAL POPUP PLATFORM -->
+  <div id="videoModal" class="modal-overlay" onclick="handleBackdropClick(event)">
+    <div id="modalContainer" class="modal-container">
+      <div id="modalHeader" class="modal-header">
+        <h3 id="modalTitle" class="modal-title">Video Player</h3>
+        <div style="display: flex; gap: 6px; align-items: center;">
+          <button class="modal-close-btn header-nav-btn prev-vid-btn" onclick="navigateModalVideo(-1)" title="Previous Video">◀</button>
+          <button class="modal-close-btn header-nav-btn next-vid-btn" onclick="navigateModalVideo(1)" title="Next Video">▶</button>
+          <button id="minimizeBtn" class="modal-close-btn" onclick="toggleMinimizeVideo(event)" title="Minimize / Expand">🗕</button>
+          <button class="modal-close-btn" onclick="closeVideoModal()" title="Close (Esc)">✕</button>
+        </div>
+      </div>
+
+      <div class="modal-scroll-body">
+        <div class="modal-player-box">
+          <iframe id="modalIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+
+        <div class="modal-info-panel">
+          <div class="modal-stats-bar">
+            <span class="stat-badge" id="modalViews">👁️ 0 views</span>
+            <span class="stat-badge" id="modalLikes">👍 0 likes</span>
+            <span class="stat-badge" id="modalCommentCount">💬 0 comments</span>
+            <span class="stat-badge" id="modalDate" style="margin-left: auto;">📅 00/00/0000</span>
+          </div>
+
+          <div id="modalDescription" class="modal-description">
+            Loading video description...
+          </div>
+        </div>
+
+        <div class="modal-comments-section">
+          <div class="comments-header">💬 Top Comments</div>
+          <div id="modalCommentsList" class="comment-list">
+            Loading comments...
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="modal-nav-btns">
+          <button class="modal-nav-btn prev-vid-btn" onclick="navigateModalVideo(-1)">◀ Prev</button>
+          <button class="modal-nav-btn next-vid-btn" onclick="navigateModalVideo(1)">Next ▶</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <!-- FIREBASE SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // Initialize Firebase Globally on public index page if missing
+    if (!firebase.apps.length) {
+      firebase.initializeApp({
+        apiKey: "AIzaSyC2E3LJsCxPsGl3yXE81J1MRB0hFbI0mIg",
+        authDomain: "villagantecontentdata.firebaseapp.com",
+        projectId: "villagantecontentdata",
+        storageBucket: "villagantecontentdata.firebasestorage.app",
+        messagingSenderId: "899843775768",
+        appId: "1:899843775768:web:3bab141c961435b8f1d26d"
+      });
+    }
+    const db = firebase.firestore();
+  </script>
+
+  <!-- Load Projects & Main Logic -->
+  <script src="projects.js"></script>
+  <script src="homeback.js"></script>
+  <script src="videoback.js"></script>
+  <script src="friendback.js"></script>
+  <script src="contactback.js"></script>
+  <script src="projectback.js"></script>
+  <script src="script.js"></script>
+  <script src="settings.js"></script>
+  <script src="visitor.js"></script>
+  <script src="projects.js"></script>
+  <script src="aichatbox.js"></script>
+  <script src="aichatback.js"></script>
+  <script src="resume.js"></script>
+  <script src="contact.js"></script>
+  
+  
+</body>
+</html>
+
+

@@ -1,0 +1,177 @@
+:root {
+  /* Home banner parallax controls. */
+  --parallax-container-width: 100%;
+  --parallax-container-height: 280px;
+  --parallax-container-x: 0px;
+  --parallax-container-y: 0px;
+  --parallax-container-scale: 1;
+  --parallax-media-width: 100%;
+  --parallax-media-height: 100%;
+  --parallax-media-x: 0px;
+  --parallax-media-y: 200px;
+  --parallax-media-scale: 1;
+  --parallax-media-overscan: 220px;
+  --parallax-scroll-speed: 0.4;
+
+  /* Home tab parallax controls. */
+  --home-parallax-container-width: 200%;
+  --home-parallax-container-height: 1400px;
+  --home-parallax-container-x: 0px;
+  --home-parallax-container-y: 0px;
+  --home-parallax-container-scale: 1;
+  --home-parallax-media-width: 100%;
+  --home-parallax-media-height: 60%;
+  --home-parallax-media-x: 130px;
+  --home-parallax-media-y: -420px;
+  --home-parallax-media-scale: 01;
+  --home-parallax-media-overscan: 500px;
+  --home-parallax-scroll-speed: 1.2;
+
+  /* Home parallax edge gradients. */
+  --home-parallax-left-gradient-x: -360px;
+  --home-parallax-left-gradient-y: 0px;
+  --home-parallax-left-gradient-width: 180px;
+  --home-parallax-left-gradient-height: 110%;
+  --home-parallax-left-gradient-color: #000000;
+  --home-parallax-left-gradient-opacity: 1;
+  --home-parallax-left-gradient-start-opacity: 1;
+  --home-parallax-left-gradient-end-opacity: 0;
+  --home-parallax-left-gradient-start-position: 0%;
+  --home-parallax-left-gradient-end-position: 100%;
+  --home-parallax-right-gradient-x: -360px;
+  --home-parallax-right-gradient-y: 0px;
+  --home-parallax-right-gradient-width: 180px;
+  --home-parallax-right-gradient-height: 110%;
+  --home-parallax-right-gradient-color: #000000;
+  --home-parallax-right-gradient-opacity: 1;
+  --home-parallax-right-gradient-start-opacity: 1;
+  --home-parallax-right-gradient-end-opacity: 0;
+  --home-parallax-right-gradient-start-position: 0%;
+  --home-parallax-right-gradient-end-position: 100%;
+
+  /* Home parallax shadow controls. */
+  --home-parallax-shadow-x: 0px;
+  --home-parallax-shadow-y: 0px;
+  --home-parallax-shadow-width: 200%;
+  --home-parallax-shadow-height: 1320px;
+  --home-parallax-shadow-color: rgba(0, 0, 0, 0.7);
+  --home-parallax-shadow-blur: 100px;
+}
+
+.banner-container {
+  width: var(--parallax-container-width);
+  height: var(--parallax-container-height);
+  overflow: hidden;
+  position: relative;
+  left: var(--parallax-container-x);
+  top: var(--parallax-container-y);
+  transform: scale(var(--parallax-container-scale));
+  transform-origin: center top;
+  z-index: 1;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+}
+
+.parallax-banner {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  background-image: url('images/KouseiBackgroundPic.jpg');
+  width: max(var(--parallax-media-width), calc(100% + var(--parallax-media-overscan)));
+  height: max(var(--parallax-media-height), calc(100% + var(--parallax-media-overscan)));
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transform: translate(calc(-50% + var(--parallax-media-x)), calc(-50% + var(--parallax-media-y) + var(--parallax-scroll-y, 0px))) scale(var(--parallax-media-scale));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+#page-home {
+  position: relative;
+  isolation: isolate;
+}
+
+#page-home::before,
+#page-home::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#page-home::before {
+  left: var(--home-parallax-left-gradient-x);
+  top: var(--home-parallax-left-gradient-y);
+  width: var(--home-parallax-left-gradient-width);
+  height: var(--home-parallax-left-gradient-height);
+  opacity: var(--home-parallax-left-gradient-opacity);
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--home-parallax-left-gradient-color) calc(var(--home-parallax-left-gradient-start-opacity) * 100%), transparent) var(--home-parallax-left-gradient-start-position),
+    color-mix(in srgb, var(--home-parallax-left-gradient-color) calc(var(--home-parallax-left-gradient-end-opacity) * 100%), transparent) var(--home-parallax-left-gradient-end-position)
+  );
+}
+
+#page-home::after {
+  right: var(--home-parallax-right-gradient-x);
+  top: var(--home-parallax-right-gradient-y);
+  width: var(--home-parallax-right-gradient-width);
+  height: var(--home-parallax-right-gradient-height);
+  opacity: var(--home-parallax-right-gradient-opacity);
+  background: linear-gradient(
+    to left,
+    color-mix(in srgb, var(--home-parallax-right-gradient-color) calc(var(--home-parallax-right-gradient-start-opacity) * 100%), transparent) var(--home-parallax-right-gradient-start-position),
+    color-mix(in srgb, var(--home-parallax-right-gradient-color) calc(var(--home-parallax-right-gradient-end-opacity) * 100%), transparent) var(--home-parallax-right-gradient-end-position)
+  );
+}
+
+.home-parallax-container {
+  position: absolute;
+  left: 50%;
+  top: var(--home-parallax-container-y);
+  width: var(--home-parallax-container-width);
+  height: var(--home-parallax-container-height);
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateX(calc(-50% + var(--home-parallax-container-x))) scale(var(--home-parallax-container-scale));
+  transform-origin: center top;
+  z-index: 0;
+  opacity: 0.72;
+}
+
+.home-parallax-container::before,
+.home-parallax-container::after {
+  display: none;
+}
+
+.home-parallax-media {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  width: max(var(--home-parallax-media-width), calc(100% + var(--home-parallax-media-overscan)));
+  height: max(var(--home-parallax-media-height), calc(100% + var(--home-parallax-media-overscan)));
+  object-fit: cover;
+  object-position: center;
+  transform: translate(calc(-50% + var(--home-parallax-media-x)), calc(-50% + var(--home-parallax-media-y) + var(--home-parallax-scroll-y, 0px))) scale(var(--home-parallax-media-scale));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.home-parallax-shadow {
+  position: absolute;
+  left: calc(50% + var(--home-parallax-shadow-x));
+  top: var(--home-parallax-shadow-y);
+  width: var(--home-parallax-shadow-width);
+  height: var(--home-parallax-shadow-height);
+  transform: translateX(-50%);
+  background: var(--home-parallax-shadow-color);
+  box-shadow: 0 0 var(--home-parallax-shadow-blur) var(--home-parallax-shadow-color);
+  pointer-events: none;
+  z-index: 2;
+}

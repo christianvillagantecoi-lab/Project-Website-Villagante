@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - KouseiLarsCII</title>
+  <link rel="icon" type="image/jpeg" href="images/Villagante.jpg">
+  <style>
+    :root {
+      --bg-color: #0f0f0f;
+      --card-bg: rgba(30, 30, 38, 0.85);
+      --accent-color: #ff4757;
+      --text-main: #ffffff;
+      --text-muted: #aaaaaa;
+      --border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .admin-parallax-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120%;
+      background-image: url('images/KouseiBackgroundPic.jpg');
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      z-index: 1;
+      filter: brightness(0.65);
+    }
+
+    .admin-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(15,15,15,0.85) 100%);
+      z-index: 2;
+    }
+
+    .login-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 420px;
+      padding: 40px 30px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      text-align: center;
+      margin: 20px;
+    }
+
+    .profile-avatar-admin {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background-image: url('images/Villagante.jpg');
+      background-size: cover;
+      background-position: center;
+      border: 3px solid var(--accent-color);
+      margin: 0 auto 16px auto;
+      box-shadow: 0 0 20px rgba(255, 71, 87, 0.4);
+    }
+
+    .welcome-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(15, 15, 15, 0.7);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
+    }
+
+    .forgot-link-wrapper {
+      text-align: right;
+      margin-top: -6px;
+      margin-bottom: 24px;
+    }
+
+    .forgot-btn {
+      background: transparent;
+      border: none;
+      color: var(--accent-color);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .forgot-btn:hover {
+      text-decoration: underline;
+      opacity: 0.85;
+    }
+
+    .login-submit-btn {
+      width: 100%;
+      background: var(--accent-color);
+      color: #ffffff;
+      border: none;
+      padding: 13px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+    }
+
+    .login-submit-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .status-msg {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      padding: 10px;
+      display: none;
+    }
+
+    .status-msg.error {
+      display: block;
+      background: rgba(255, 71, 87, 0.15);
+      border: 1px solid #ff4757;
+      color: #ff4757;
+    }
+
+    .status-msg.success {
+      display: block;
+      background: rgba(46, 213, 115, 0.15);
+      border: 1px solid #2ed573;
+      color: #2ed573;
+    }
+
+    .back-home-link {
+      display: inline-block;
+      margin-top: 22px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .back-home-link:hover {
+      color: var(--text-main);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-parallax-bg" id="adminParallax"></div>
+  <div class="admin-overlay"></div>
+
+  <div class="login-container">
+    <div class="profile-avatar-admin"></div>
+    <h1 class="welcome-title">Welcome Christian!</h1>
+    <p class="subtitle">Administrator Portal Access</p>
+
+    <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+      <div class="form-group">
+        <label for="adminEmail">Email Address</label>
+        <input type="email" id="adminEmail" class="form-input" placeholder="admin@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="adminPassword">Password</label>
+        <input type="password" id="adminPassword" class="form-input" placeholder="••••••••" required>
+      </div>
+
+      <div class="forgot-link-wrapper">
+        <button type="button" class="forgot-btn" onclick="handleForgotPassword()">Forgot Password?</button>
+      </div>
+
+      <button type="submit" class="login-submit-btn" id="loginBtn">Log In</button>
+
+      <div id="statusMsg" class="status-msg"></div>
+    </form>
+
+    <a href="index.html" class="back-home-link">← Back to Main Website</a>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC2E3LJsCxPsGl3yXE81J1MRB0hFbI0mIg",
+      authDomain: "villagantecontentdata.firebaseapp.com",
+      projectId: "villagantecontentdata",
+      storageBucket: "villagantecontentdata.firebasestorage.app",
+      messagingSenderId: "899843775768",
+      appId: "1:899843775768:web:3bab141c961435b8f1d26d",
+      measurementId: "G-C2RR7S2RJ1"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Test website behavior: the teacher/admin can open the admin portal and
+    // be teleported straight into the dashboard without entering credentials.
+    window.location.replace('dashboard.html?testAdmin=1');
+
+    window.addEventListener('scroll', () => {
+      const bg = document.getElementById('adminParallax');
+      if (bg) {
+        bg.style.transform = `translateY(${window.pageYOffset * 0.3}px)`;
+      }
+    });
+
+    function showStatus(message, type) {
+      const statusEl = document.getElementById('statusMsg');
+      statusEl.className = `status-msg ${type}`;
+      statusEl.innerText = message;
+    }
+
+    async function handleAdminLogin(event) {
+      event.preventDefault();
+      const email = document.getElementById('adminEmail').value.trim();
+      const password = document.getElementById('adminPassword').value;
+      const loginBtn = document.getElementById('loginBtn');
+
+      loginBtn.innerText = "Authenticating...";
+      loginBtn.disabled = true;
+
+      try {
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        
+        // Log login event to Firestore admin_logs collection
+        try {
+          await db.collection("admin_logs").add({
+            email: userCredential.user.email,
+            uid: userCredential.user.uid,
+            loginTime: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        } catch (logError) {
+          console.warn("Could not write to admin_logs:", logError);
+        }
+
+        showStatus("Log in successful! Redirecting...", "success");
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 1000);
+      } catch (error) {
+        showStatus(error.message, "error");
+        loginBtn.innerText = "Log In";
+        loginBtn.disabled = false;
+      }
+    }
+
+    async function handleForgotPassword() {
+      const email = document.getElementById('adminEmail').value.trim();
+
+      if (!email) {
+        showStatus("Please enter your email address in the field above first.", "error");
+        return;
+      }
+
+      try {
+        await auth.sendPasswordResetEmail(email);
+        showStatus(`Password reset link sent to ${email}! Check your inbox.`, "success");
+      } catch (error) {
+        showStatus(error.message, "error");
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,609 @@
+/* ==========================================================================
+   VISITOR ANALYTICS & YOUTUBE-STYLE ANALYTICS GRAPH
+   ========================================================================== */
+
+/* Main YouTube Studio Analytics Wrapper */
+.yt-analytics-wrapper {
+  background: #18181f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Header & Control Bar */
+.yt-analytics-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.yt-analytics-header-title h2 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+}
+
+.yt-analytics-header-title p {
+  font-size: 0.85rem;
+  color: #aaaaaa;
+  margin-top: 4px;
+}
+
+.yt-analytics-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.yt-control-select, .yt-control-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.yt-control-select option {
+  background: #18181f;
+  color: #ffffff;
+}
+
+.yt-control-btn:hover, .yt-control-btn.active {
+  background: #ff4757;
+  border-color: #ff4757;
+  color: #ffffff;
+}
+
+/* Metrics Row & Summary Cards */
+.analytics-metrics-grid,
+.yt-metrics-summary-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.metric-card,
+.yt-metric-tab {
+  background: rgba(30, 30, 38, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.yt-metric-tab:hover, .yt-metric-tab.active {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 71, 87, 0.4);
+}
+
+.metric-card-label,
+.yt-metric-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted, #aaaaaa);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+}
+
+.metric-card-value,
+.yt-metric-value {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--accent-color, #ff4757);
+  display: block;
+}
+
+.metric-card-sub,
+.yt-metric-trend {
+  font-size: 0.75rem;
+  color: #2ed573;
+  font-weight: 600;
+  display: block;
+}
+
+/* Main Dashboard Grid Layout */
+.yt-main-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 20px;
+}
+
+@media (max-width: 992px) {
+  .yt-main-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.yt-chart-box {
+  background: rgba(10, 10, 14, 0.5);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px;
+  position: relative;
+  min-height: 250px;
+  overflow-x: auto;
+}
+
+.yt-chart-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 8px;
+}
+
+/* SVG Line Chart Styling */
+.yt-line-chart-wrapper {
+  width: max-content;
+}
+
+.yt-svg-chart {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.yt-chart-gridline {
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 1;
+  stroke-dasharray: 4;
+}
+
+/* Base Line Chart Point - Invisible by default */
+.yt-chart-point {
+  fill: #29b6f6;
+  stroke: #ffffff;
+  stroke-width: 2;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, r 0.2s ease, fill 0.2s ease, stroke 0.2s ease;
+}
+
+.yt-chart-axis-text {
+  fill: #888888;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: inherit;
+}
+
+/* YouTube Studio Line Tooltip Node */
+.yt-interactive-node {
+  cursor: pointer;
+}
+
+/* Reveal and enlarge dot when hovering over its interactive node zone */
+.yt-interactive-node:hover .yt-chart-point {
+  opacity: 1;
+  r: 6;
+  fill: #ffffff;
+  stroke: #29b6f6;
+  stroke-width: 3;
+}
+
+.yt-node-hover-box {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease-in-out;
+  overflow: visible;
+}
+
+.yt-interactive-node:hover .yt-node-hover-box {
+  opacity: 1;
+}
+
+.yt-svg-tooltip {
+  background: #ffffff;
+  color: #0f0f13;
+  padding: 6px 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.yt-tip-date {
+  font-size: 0.72rem;
+  color: #666666;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.yt-tip-views {
+  font-size: 1rem;
+  font-weight: 900;
+  color: #0288d1;
+}
+
+/* Bar Chart Layout & Y-Axis Styling */
+.yt-bar-chart-container {
+  display: flex;
+  width: 100%;
+  padding-top: 10px;
+}
+
+.yt-y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-right: 12px;
+  font-size: 11px;
+  color: #888888;
+  font-weight: 600;
+  padding-bottom: 24px;
+}
+
+.yt-bar-plot-area {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 4px;
+  overflow-x: auto;
+  min-width: 0;
+}
+
+.yt-bar-wrapper {
+  flex: 1;
+  min-width: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  gap: 8px;
+  position: relative;
+}
+
+.yt-bar-wrapper:hover .yt-bar-tooltip {
+  opacity: 1;
+  transform: translateY(-5px);
+}
+
+.yt-bar-tooltip {
+  position: absolute;
+  top: -42px;
+  background: #ffffff;
+  color: #0f0f13;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  z-index: 10;
+  text-align: center;
+}
+
+.yt-bar-fill {
+  width: 100%;
+  max-width: 24px;
+  background: linear-gradient(180deg, #29b6f6 0%, rgba(41, 182, 246, 0.3) 100%);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.4s ease;
+}
+
+.yt-bar-label {
+  font-size: 0.68rem;
+  color: #888888;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 45px;
+  text-align: center;
+}
+
+/* Realtime Widget Sidebar */
+.yt-realtime-widget {
+  background: rgba(10, 10, 14, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.yt-realtime-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.yt-realtime-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.yt-live-pulse-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: #2ed573;
+  font-weight: 700;
+}
+
+.yt-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #2ed573;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #2ed573;
+  animation: ytPulse 1.5s infinite;
+}
+
+@keyframes ytPulse {
+  0% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.4; transform: scale(0.9); }
+}
+
+.yt-realtime-big-num {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+/* Realtime Micro Bars Container & Tooltip Styling */
+.yt-micro-bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 50px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 4px;
+}
+
+.yt-micro-bar-wrapper {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+  cursor: pointer;
+}
+
+.yt-micro-bar {
+  width: 100%;
+  background: #ff4757;
+  border-radius: 2px 2px 0 0;
+  opacity: 0.85;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              background-color 0.2s ease, 
+              box-shadow 0.2s ease, 
+              opacity 0.2s ease;
+  transform-origin: bottom;
+}
+
+.yt-micro-bar-wrapper:hover .yt-micro-bar {
+  opacity: 1;
+  background-color: #ff6b81;
+  transform: scaleY(1.15) scaleX(1.1);
+  box-shadow: 0 0 10px rgba(255, 71, 87, 0.8);
+}
+
+.yt-micro-bar-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: #252530;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  white-space: nowrap;
+  z-index: 100;
+  text-align: center;
+}
+
+.yt-micro-bar-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #252530 transparent transparent transparent;
+}
+
+.yt-micro-bar-wrapper:hover .yt-micro-bar-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.yt-micro-tip-time {
+  font-size: 0.72rem;
+  color: #aaaaaa;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.yt-micro-tip-views {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+/* Visitor Counter Badge */
+.visitor-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+/* Project Lists Two-Column Grid */
+.stats-two-column-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-top: 16px;
+}
+
+.stats-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .stats-two-column-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Analytics Action Bar & Controls */
+.analytics-action-bar {
+  background: var(--card-bg, #1e1e26);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  border-radius: 14px;
+  padding: 18px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.action-bar-title h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-main, #ffffff);
+}
+
+.action-bar-title p {
+  font-size: 0.8rem;
+  color: var(--text-muted, #aaaaaa);
+  margin-top: 2px;
+}
+
+.action-bar-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-analytics {
+  border: none;
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-export {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
+}
+.btn-export:hover { background: rgba(255, 255, 255, 0.18); }
+
+.btn-import {
+  background: #2ed573;
+  color: #ffffff;
+}
+.btn-import:hover { opacity: 0.9; }
+
+.btn-reset {
+  background: var(--accent-color, #ff4757);
+  color: #ffffff;
+}
+.btn-reset:hover { background: var(--accent-hover, #e03e4d); }
+
+/* Pop-out Chart Modal & Reset Modal Overlay */
+.yt-modal-overlay,
+.analytics-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.yt-modal-content {
+  background: #18181f;
+  border: 1px solid rgba(255, 71, 87, 0.3);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 900px;
+  padding: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+}
+
+.analytics-modal-content {
+  background: #1e1e26;
+  border: 1px solid rgba(255, 71, 87, 0.4);
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+.analytics-modal-content .modal-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.analytics-modal-content h2 { font-size: 1.3rem; color: #fff; margin-bottom: 8px; }
+.analytics-modal-content p { font-size: 0.88rem; color: var(--text-muted, #aaa); line-height: 1.5; margin-bottom: 24px; }
+
+.modal-actions { display: flex; gap: 12px; justify-content: center; }
+
+.modal-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.modal-btn.cancel-btn { background: rgba(255, 255, 255, 0.1); color: #fff; }
+.modal-btn.cancel-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+.modal-btn.confirm-btn { background: #ff4757; color: #fff; }
+.modal-btn.confirm-btn:hover { background: #e03e4d; }

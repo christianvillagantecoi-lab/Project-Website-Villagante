@@ -1,0 +1,140 @@
+:root {
+  /* Friends-tab parallax container controls. */
+  --friends-parallax-container-width: 400%;
+  --friends-parallax-container-height: 900px;
+  --friends-parallax-container-x: 0px;
+  --friends-parallax-container-y: 0px;
+  --friends-parallax-container-scale: 0.51;
+
+  /* Friends-tab parallax media controls. */
+  --friends-parallax-media-width: 250%;
+  --friends-parallax-media-height: 300%;
+  --friends-parallax-media-x: 2400px;
+  --friends-parallax-media-y: 400px;
+  --friends-parallax-media-scale: 0.9;
+  --friends-parallax-media-overscan: 500px;
+  --friends-parallax-scroll-speed: 1;
+
+  /* Friends-tab edge gradients. */
+  --friends-parallax-left-gradient-x: -360px;
+  --friends-parallax-left-gradient-y: 0px;
+  --friends-parallax-left-gradient-width: 180px;
+  --friends-parallax-left-gradient-height: 110%;
+  --friends-parallax-left-gradient-color: #000000;
+  --friends-parallax-left-gradient-opacity: 1;
+  --friends-parallax-left-gradient-start-opacity: 1;
+  --friends-parallax-left-gradient-end-opacity: 0;
+  --friends-parallax-left-gradient-start-position: 0%;
+  --friends-parallax-left-gradient-end-position: 100%;
+  --friends-parallax-right-gradient-x: -360px;
+  --friends-parallax-right-gradient-y: 0px;
+  --friends-parallax-right-gradient-width: 180px;
+  --friends-parallax-right-gradient-height: 110%;
+  --friends-parallax-right-gradient-color: #000000;
+  --friends-parallax-right-gradient-opacity: 1;
+  --friends-parallax-right-gradient-start-opacity: 1;
+  --friends-parallax-right-gradient-end-opacity: 0;
+  --friends-parallax-right-gradient-start-position: 0%;
+  --friends-parallax-right-gradient-end-position: 100%;
+
+  /* Friends-tab shadow controls. */
+  --friends-parallax-shadow-x: 0px;
+  --friends-parallax-shadow-y: 0px;
+  --friends-parallax-shadow-width: 200%;
+  --friends-parallax-shadow-height: 800px;
+  --friends-parallax-shadow-color: rgba(0, 0, 0, 0.7);
+  --friends-parallax-shadow-blur: 100px;
+}
+
+#page-friends {
+  position: relative;
+  isolation: isolate;
+}
+
+#page-friends::before,
+#page-friends::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#page-friends::before {
+  left: var(--friends-parallax-left-gradient-x);
+  top: var(--friends-parallax-left-gradient-y);
+  width: var(--friends-parallax-left-gradient-width);
+  height: var(--friends-parallax-left-gradient-height);
+  opacity: var(--friends-parallax-left-gradient-opacity);
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--friends-parallax-left-gradient-color) calc(var(--friends-parallax-left-gradient-start-opacity) * 100%), transparent) var(--friends-parallax-left-gradient-start-position),
+    color-mix(in srgb, var(--friends-parallax-left-gradient-color) calc(var(--friends-parallax-left-gradient-end-opacity) * 100%), transparent) var(--friends-parallax-left-gradient-end-position)
+  );
+}
+
+#page-friends::after {
+  right: var(--friends-parallax-right-gradient-x);
+  top: var(--friends-parallax-right-gradient-y);
+  width: var(--friends-parallax-right-gradient-width);
+  height: var(--friends-parallax-right-gradient-height);
+  opacity: var(--friends-parallax-right-gradient-opacity);
+  background: linear-gradient(
+    to left,
+    color-mix(in srgb, var(--friends-parallax-right-gradient-color) calc(var(--friends-parallax-right-gradient-start-opacity) * 100%), transparent) var(--friends-parallax-right-gradient-start-position),
+    color-mix(in srgb, var(--friends-parallax-right-gradient-color) calc(var(--friends-parallax-right-gradient-end-opacity) * 100%), transparent) var(--friends-parallax-right-gradient-end-position)
+  );
+}
+
+#page-friends > .friends-parallax {
+  position: absolute;
+  left: -50%;
+  top: var(--friends-parallax-container-y);
+  width: var(--friends-parallax-container-width);
+  height: var(--friends-parallax-container-height);
+  overflow: visible;
+  clip-path: inset(0 -100vw -100vh -100vw);
+  pointer-events: none;
+  z-index: 0;
+  transform: translateX(calc(-50% + var(--friends-parallax-container-x))) scale(var(--friends-parallax-container-scale));
+  transform-origin: center top;
+  opacity: 0.72;
+}
+
+#page-friends > .friends-parallax > .friends-parallax-media {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  width: max(var(--friends-parallax-media-width), calc(100% + var(--friends-parallax-media-overscan)));
+  height: max(var(--friends-parallax-media-height), calc(100% + var(--friends-parallax-media-overscan)));
+  object-fit: contain;
+  object-position: center;
+  transform: translate(calc(-50% + var(--friends-parallax-media-x)), calc(-50% + var(--friends-parallax-media-y) + var(--friends-parallax-scroll-y, 0px))) scale(var(--friends-parallax-media-scale));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+#page-friends > .friends-parallax-shadow {
+  position: absolute;
+  left: -50%;
+  top: var(--friends-parallax-shadow-y);
+  width: var(--friends-parallax-shadow-width);
+  height: var(--friends-parallax-shadow-height);
+  transform: translateX(calc(-50% + var(--friends-parallax-shadow-x)));
+  background: linear-gradient(
+    to right,
+    var(--friends-parallax-shadow-color) 0%,
+    var(--friends-parallax-shadow-color) 50%,
+    transparent 100%
+  );
+  box-shadow: none;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#page-friends > :not(.friends-parallax):not(.friends-parallax-shadow) {
+  position: relative;
+  z-index: 3;
+}
